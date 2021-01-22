@@ -1,0 +1,27 @@
+﻿@model List<Cricket.Models.LeaguesRulesMaster>
+<div class="form-group form-group-sm">
+    <div class="col-sm-12">
+        <table data-index="1" class="table table-hover table-striped table-condensed">
+            <tbody>
+                @{
+                    if (Model != null)
+                    {
+                        int i = 0;
+                        foreach (Cricket.Models.LeaguesRulesMaster rule in Model)
+                        {
+                            i++;
+                            <tr data-id="@rule.RecordID">
+                                <td class="hidden-print" style="width: 5%">
+                                    <span class="badge badge-primary">@i</span>
+                                </td>
+                                <td>
+                                    @rule.Rule
+                                </td>
+                            </tr>
+                        }
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

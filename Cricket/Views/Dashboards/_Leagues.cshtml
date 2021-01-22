@@ -1,0 +1,159 @@
+﻿@model List<Cricket.Models.LeaguesMaster>
+<style>
+    .table th {
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .table td {
+        text-align: center;
+        white-space: nowrap;
+    }
+</style>
+<div class="text-left mt">
+    <span class="label label-default">
+        Showing
+        <label id="displayRecord">
+            0
+        </label>
+        of
+        <label id="totalRecords">
+            @Model.Count
+        </label>
+    </span>
+</div>
+<table data-index="1" class="table table-hover table-striped table-condensed">
+    <thead>
+        <tr>
+            <th><i class="fa fa-slack"></i></th>
+            <th>
+                Name
+            </th>
+            <th>
+                Games
+            </th>
+            <th>
+                Difficulty
+            </th>
+            <th>
+                Format
+            </th>
+            <th>
+                Rounds
+            </th>
+            <th>
+                Win Points
+            </th>
+            <th>
+                Start Date
+            </th>
+            <th>
+                Closed
+            </th>
+            <th>
+                Default League
+            </th>
+            <th>
+                Group League
+            </th>
+            <th>
+                Winner
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            Cricket.Models.CricketEntities db = new Cricket.Models.CricketEntities();
+            int i = 0;
+            foreach (var league in Model)
+            {
+                i++;
+                <tr data-id="@league.RecordID">
+                    <td>
+                        <span class="badge badge-primary">@i</span>
+                    </td>
+                    <td>
+                        <strong>@league.Name</strong>
+                    </td>
+                    <td>
+                        <i class="fa fa-check-square-o fa-lg text-danger"></i>&nbsp;&nbsp;<strong>@db.Games.Where(p => p.LeaguesPlayersMaster.LeagueID == league.RecordID).Count()</strong>
+                    </td>
+                    <td>
+                        @league.Difficulty
+                    </td>
+                    <td>
+                        @league.Format
+                    </td>
+                    <td>
+                        @league.Rounds
+                    </td>
+                    <td>
+                        @league.WinPoints
+                    </td>
+                    <td>
+                        @league.StartDate.Value.ToString("dd-MMM-yyyy")
+                    </td>
+                    <td>
+                        @league.IsClosed
+                    </td>
+                    <td>
+                        @{
+                            if (league.IsDefaultLeague == true)
+                            {
+                                <text>Yes</text>
+                            }
+                            else
+                            {
+                                <text>No</text>
+                            }
+                        }
+                    </td>
+                    <td>
+                        @{
+                            if (league.IsGroupLeague == true)
+                            {
+                                <text>Yes</text>
+                            }
+                            else
+                            {
+                                <text>No</text>
+                            }
+                        }
+                    </td>
+                    <td>
+                        <span class="label label-success block fa fa-trophy">
+                            &nbsp;&nbsp;@{if (league.IsClosed == "Yes")
+                                { @league.Winner;
+                            }
+                            else
+                            {
+                                <text>Coming Soon</text>
+                            }
+                            }
+                        </span>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<script>
+    $(function () {
+        var length = $(".table tbody tr").length;
+
+        if (length < 15) {
+            $("#btnPrevious").parent('li').addClass('disabled');
+        }
+        else {
+            $("#btnPrevious").parent('li').removeClass('disabled');
+        }
+
+        $("#displayRecord").text(length);
+
+        $(".table tbody tr").on('click', function (e) {
+            $(this).addClass('active').addClass('success').siblings().removeClass('active').removeClass('success');
+        });
+
+    });
+
+</script>

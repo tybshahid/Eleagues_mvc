@@ -1,0 +1,323 @@
+﻿@model Cricket.CustomModels.GameManagerModel
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h3 class="text-muted mt0">
+        Game Manager
+    </h3>
+    @using (Html.BeginForm("SaveGame", "Administration", FormMethod.Post, new { id = "frmGameManager", enctype = "multipart/form-data", @autocomplete = "off", @class = "form-horizontal container pdt box box-solid" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Game Details
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">
+                        League
+                    </label>
+                    <div class="col-sm-4">
+                        <select id="ddlLeague" name="ddlLeague" class="form-control" required>
+                            <option value="">Please Select</option>
+                            @{
+                                if (Model.LeaguesAll != null)
+                                {
+                                    foreach (var league in Model.LeaguesAll)
+                                    {
+                                        <option value="@league.RecordID">@league.Name</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <label class="col-sm-2 control-label margin-top-sm">
+                        Scorecard
+                    </label>
+                    <div class="col-sm-4">
+                        <input name="upload" class="form-control" type="file" id="upload" required accept="image/*" />
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div id="WinnerDivPartial">
+                        @{ Html.RenderPartial("~/Views/Administration/_GameManagerWinner.cshtml", Model.Winner); }
+                    </div>
+                    <div id="OpponentDivPartial">
+                        @{ Html.RenderPartial("~/Views/Administration/_GameManagerOpponent.cshtml", Model.Opponents); }
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">
+                        Stage
+                    </label>
+                    <div class="col-sm-4">
+                        <select name="Stage" class="form-control" required>
+                            <option>League</option>
+                            <option>Pre Quarter Final</option>
+                            <option>Quarter Final</option>
+                            <option>Semi Final</option>
+                            <option>Final</option>
+                        </select>
+                    </div>
+                    <label class="col-sm-2 control-label margin-top-sm">
+                        Result
+                    </label>
+                    <div class="col-sm-4">
+                        <select name="Result" class="form-control" required>
+                            <option>Standard</option>
+                            <option>Super Over</option>
+                            <option>No Result</option>
+                            <option>Tied</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <a data-toggle="collapse" href="#collapseWinner">
+                    <h3 class="panel-title">Winner Details</h3>
+                </a>
+            </div>
+            <div id="collapseWinner" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-2 control-label">
+                            Runs Scored
+                        </label>
+                        <div class="col-sm-4">
+                            <input type="number" class="form-control" name="Runs" placeholder="Runs" required>
+                        </div>
+                        <label class="col-sm-2 control-label margin-top-sm">
+                            Wickets Lost
+                        </label>
+                        <div class="col-sm-4">
+                            <select name="Wickets" class="form-control" required>
+                                <option value="">Please Select</option>
+                                <option>0</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-2 control-label">
+                            Overs Played
+                        </label>
+                        <div class="col-sm-4">
+                            <input type="number" step="any" class="form-control" name="Overs" placeholder="Overs Played" required>
+                        </div>
+                        @*<label class="col-sm-2 control-label margin-top-sm">
+                                Fifties
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="Fifties" value="0" placeholder="Fifties" required>
+                            </div>*@
+                    </div>
+                    @*<div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">
+                                Hundreds
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="Hundreds" value="0" placeholder="Hundreds" required>
+                            </div>
+                            <label class="col-sm-2 control-label margin-top-sm">
+                                Five Wickets
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="FiveWickets" value="0" placeholder="Five Wickets" required>
+                            </div>
+                        </div>*@
+                    @*<div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">
+                                Innings High
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="InningsHigh" placeholder="Innings High" required>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <a data-toggle="collapse" href="#collapseOpponent">
+                    <h3 class="panel-title">Opponent Details</h3>
+                </a>
+            </div>
+            <div id="collapseOpponent" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-2 control-label">
+                            Runs Scored
+                        </label>
+                        <div class="col-sm-4">
+                            <input type="number" class="form-control" name="OpponentRuns" placeholder="Runs" required>
+                        </div>
+                        <label class="col-sm-2 control-label margin-top-sm">
+                            Wickets Lost
+                        </label>
+                        <div class="col-sm-4">
+                            <select name="OpponentWickets" class="form-control" required>
+                                <option value="">Please Select</option>
+                                <option>0</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-sm-2 control-label">
+                            Overs Played
+                        </label>
+                        <div class="col-sm-4">
+                            <input type="number" step="any" class="form-control" name="OpponentOvers" placeholder="Overs Played" required>
+                        </div>
+                        @*<label class="col-sm-2 control-label margin-top-sm">
+                                Fifties
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="OpponentFifties" value="0" placeholder="Fifties" required>
+                            </div>*@
+                    </div>
+                    @*<div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">
+                                Hundreds
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="OpponentHundreds" value="0" placeholder="Hundreds" required>
+                            </div>
+                            <label class="col-sm-2 control-label margin-top-sm">
+                                Five Wickets
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="OpponentFiveWickets" value="0" placeholder="Five Wickets" required>
+                            </div>
+                        </div>*@
+                    @*<div class="form-group form-group-sm">
+                            <label class="col-sm-2 control-label">
+                                Innings High
+                            </label>
+                            <div class="col-sm-4">
+                                <input type="number" class="form-control" name="OpponentInningsHigh" placeholder="Innings High" required>
+                            </div>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+
+                @{ if (ViewData["ServerMessage"] != null && (string)ViewData["ServerMessage"] == "Game Saved")
+                    {
+                        if (ViewData["WinMessage"] != null)
+                        {
+                            <a id="btnShareOnWhatsapp" href="javascript:void(0)" class="btn btn-flat btn-success btn-sm btn-block" data-text='@ViewData["WinMessage"]'>
+                                <span class="fa fa-whatsapp text-white"></span>&nbsp;&nbsp;Share this Victory !!!
+                            </a>
+                        }
+                    }
+                    else
+                    {
+                        <button id="btnSaveGame" type="submit" class="btn btn-flat btn-primary btn-sm">
+                            <span class="fa fa-plus-square text-white"></span>&nbsp;&nbsp;Save Game
+                        </button>
+                        <a class="btn btn-flat btn-default" data-toggle="tab" href="#MainTableDiv">Cancel</a>
+                    }
+                }
+
+            </div>
+        </div>
+    }
+</body>
+</html>
+<script>
+    $(function () {
+
+        $('#btnShareOnWhatsapp').click(function () {
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                var message = $(this).attr("data-text");
+                var encodedMessage = encodeURIComponent(message);
+                var url = "whatsapp://send?text=" + encodedMessage;
+                window.location.href = url;
+            } else {
+                toastr.error('Feature only available for mobile devices');
+            }
+        });
+
+        @{
+            if (ViewData["ServerError"] != null && ViewData["ServerError"].ToString() != "") {
+                <text>toastr.error('@ViewData["ServerError"]')</text>
+            }
+        }
+
+        @{
+            if (ViewData["ServerMessage"] != null && ViewData["ServerMessage"].ToString() != "") {
+                <text>toastr.success('@ViewData["ServerMessage"]')</text>
+            }
+        }
+
+        $("#ddlLeague").change(function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Administration/FetchWinners")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    LeagueID : this.value
+                },
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        $('#WinnerDivPartial').html(result);
+                        $('#OpponentDivPartial').load('@Url.Content("~/Administration/FetchOpponents")', { __RequestVerificationToken: gettoken(), WinnerLeaguePlayerID: null });
+                    });
+                }
+            });
+
+        });
+
+        $("#frmGameManager").submit(function (e) {
+
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: '@Url.Content("~/Administration/SaveGame")',
+                type: 'post',
+                //data: $(this).serialize() + "&__RequestVerificationToken=" + gettoken() + "&WinnerLeaguePlayerID=" + $("#ddlWinner").val() + "&OpponentID=" + $('#ddlOpponent').val(),
+                data: formData,
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        $('#ManagerDiv').html(result);
+                    });
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+        });
+
+    });
+</script>

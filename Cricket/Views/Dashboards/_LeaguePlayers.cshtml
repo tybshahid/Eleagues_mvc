@@ -1,0 +1,86 @@
+﻿@model Cricket.CustomModels.LeaguePlayersModel
+<nav class="navbar mb0 mt0">
+    <div class="panel panel-info text-center">
+        <div class="panel-heading">
+            <a data-toggle="collapse" href="#collapseFilter">
+                <h3 class="panel-title">
+                    <span class="fa fa-filter">&nbsp;&nbsp;Filters</span>
+                </h3>
+            </a>
+        </div>
+        <div id="collapseFilter" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <select id="ddlLeague" name="LeagueID" class="form-control">
+                        <option value="">Please Select</option>
+                        @{
+                            if (Model.LeaguesAll != null)
+                            {
+                                foreach (var league in Model.LeaguesAll)
+                                {
+                                    if (ViewData["defaultLeague"] != null && (long)ViewData["defaultLeague"] == league.RecordID)
+                                    {
+                                        <option selected value="@league.RecordID">@league.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@league.RecordID">@league.Name</option>
+                                    }
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group form-group-sm">
+                    <select id="GroupID" name="GroupID" class="form-control">
+                        <option value="">Group Name</option>
+                        @{
+                            if (Model.Groups != null)
+                            {
+                                foreach (var obj in Model.Groups)
+                                {
+                                    <option value="@obj.RecordID">@obj.GroupName</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-2 col-sm-offset-5">
+                        <button id="btnApply" type="button" class="btn btn-warning btn-flat">
+                            <span class="fa fa-filter text-white"></span>&nbsp;&nbsp;Apply
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<div id="LeaguePlayersDivPartial" class="table-responsive">
+    @{ Html.RenderPartial("~/Views/Dashboards/_LeaguePlayers2.cshtml", Model.LeaguePlayers); }
+</div>
+<script>
+    $(function () {
+
+        $("#btnApply").on('click', function () {
+
+            $.ajax({
+                url: '@Url.Content("~/Dashboards/FetchLeaguePlayers")',
+                type: 'post',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    LeagueID: $('#ddlLeague').val(),
+                    GroupID: $('#GroupID').val()
+                },
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        $('#LeaguePlayersDivPartial').html(result);
+                        toastr.success('Filter Applied');
+                    });
+                }
+            });
+
+        });
+
+    });
+</script>

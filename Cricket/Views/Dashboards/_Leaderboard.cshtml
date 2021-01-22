@@ -1,0 +1,91 @@
+﻿@model Cricket.CustomModels.LeaderBoardModel
+<nav class="navbar mb0 mt0">
+    <div class="panel panel-info text-center">
+        <div class="panel-heading">
+            <a data-toggle="collapse" href="#collapseFilter">
+                <h3 class="panel-title">
+                    <span class="fa fa-filter">&nbsp;&nbsp;Filters</span>
+                </h3>
+            </a>
+        </div>
+        <div id="collapseFilter" class="panel-collapse collapse">
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <select id="ddlLeague" name="ddlLeague" class="form-control">
+                        <option value="">Please Select</option>
+                        @{foreach (var league in Model.Leagues)
+                            {
+                                if (ViewData["defaultLeague"] != null && (long)ViewData["defaultLeague"] == league.RecordID)
+                                {
+                                    <option selected value="@league.RecordID">@league.Name</option>
+                                }
+                                else
+                                {
+                                    <option value="@league.RecordID">@league.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group form-group-sm">
+                    <select id="ddlPlayer" name="ddlPlayer" class="form-control">
+                        <option value="">Select Player</option>
+                        @{foreach (var player in Model.Players)
+                            {
+                                <option value="@player.RecordID">@player.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                <div class="form-group form-group-sm">
+                    <select id="ddlGroupView" name="ddlGroupView" class="form-control">
+                        <option value="">Group Filter</option>
+                        <option>Yes</option>
+                    </select>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-2 col-sm-offset-5">
+                        <button id="btnApply" type="button" class="btn btn-warning btn-flat">
+                            <span class="fa fa-filter text-white"></span>&nbsp;&nbsp;Apply
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+<div id="ViewLeaderboardDiv" class="table-responsive">
+    @{ Html.RenderPartial("~/Views/Dashboards/_Leaderboard2.cshtml", Model.LeaderBoard); }
+</div>
+<script>
+$(function () {
+
+    $("#btnApply").on('click', function () {
+
+        //if ($('#ddlLeague').val() === '' && $('#ddlPlayer').val() === '') {
+        //    toastr.error('Filters Not Selected!!!');
+        //    return false;
+        //}
+
+        $.ajax({
+            url: '@Url.Content("~/Dashboards/FilterLeaderboard")',
+            type: 'post',
+            data: {
+                __RequestVerificationToken: gettoken(),
+                LeagueID: $('#ddlLeague').val(),
+                PlayerID: $('#ddlPlayer').val(),
+                GroupView: $('#ddlGroupView').val()
+            },
+            success: function (result) {
+                ajaxSuccessCall(result, function () {
+                    $('#ViewLeaderboardDiv').html(result);
+                    toastr.success('Filter Applied');
+                });
+            }
+        });
+
+    });
+
+});
+
+</script>

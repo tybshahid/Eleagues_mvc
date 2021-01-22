@@ -1,0 +1,134 @@
+﻿@model Cricket.CustomModels.LeaderBoardModel
+<html>
+<head>
+    <title>Dashboards</title>
+</head>
+<body>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="MainTableDiv">
+            <div class="col-lg-2 hidden-print">
+                <div class="list-group">
+                    <div class="list-group-item disabled" data-target="#divMenu">
+                        <i class="fa fa-user-tachometer"></i>&nbsp;&nbsp;&nbsp;
+                        Menu
+                    </div>
+                    <div id="divMenu" class="">
+                        <a class="list-group-item" id="linkViewLeagues" href="#">
+                            <span class="fa fa-plus-square text-gray-dark"></span>&nbsp;&nbsp;&nbsp;Leagues
+                        </a>
+                        <a class="list-group-item" id="linkViewLeaguePlayers" href="#">
+                            <span class="fa fa-star text-yellow"></span>&nbsp;&nbsp;&nbsp;Players
+                        </a>
+                        <a class="list-group-item" id="linkViewRules" href="#">
+                            <span class="fa fa-slack text-primary"></span>&nbsp;&nbsp;&nbsp;Rules
+                        </a>
+                        <a class="list-group-item" id="linkViewGames" href="#">
+                            <span class="fa fa-gamepad text-success"></span>&nbsp;&nbsp;&nbsp;Games
+                        </a>
+                        <a class="list-group-item active" id="linkViewLeaderboard" href="#">
+                            <span class="fa fa-trophy text-danger"></span>&nbsp;&nbsp;&nbsp;Leaderboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-10 box box-solid">
+                <div id="ViewDataDiv" class="table-responsive">
+                    @{ Html.RenderPartial("~/Views/Dashboards/_Leaderboard.cshtml", Model); }
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="ManagerDiv">
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+
+        $("#linkViewLeagues").on('click', function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Dashboards/ViewLeagues")',
+                data: {
+                    __RequestVerificationToken: gettoken()
+                },
+                success: function (result) {
+                    $('#ViewDataDiv').html(result);
+                }
+            });
+
+            $('a.list-group-item,#listFilter li').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $("#linkViewRules").on('click', function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Dashboards/ViewRules")',
+                data: {
+                    __RequestVerificationToken: gettoken()
+                },
+                success: function (result) {
+                    $('#ViewDataDiv').html(result);
+                }
+            });
+
+            $('a.list-group-item,#listFilter li').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $("#linkViewLeaguePlayers").on('click', function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Dashboards/ViewLeaguePlayers")',
+                data: {
+                    __RequestVerificationToken: gettoken()
+                },
+                success: function (result) {
+                    $('#ViewDataDiv').html(result);
+                }
+            });
+
+            $('a.list-group-item,#listFilter li').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $("#linkViewGames").on('click', function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Dashboards/ViewGames")',
+                data: {
+                    __RequestVerificationToken: gettoken()
+                },
+                success: function (result) {
+                    $('#ViewDataDiv').html(result);
+                }
+            });
+
+            $('a.list-group-item,#listFilter li').removeClass('active');
+            $(this).addClass('active');
+        });
+
+        $("#linkViewLeaderboard").on('click', function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Dashboards/ViewLeaderboard")',
+                data: {
+                    __RequestVerificationToken: gettoken()
+                },
+                success: function (result) {
+                    $('#ViewDataDiv').html(result);
+                }
+            });
+
+            $('a.list-group-item,#listFilter li').removeClass('active');
+            $(this).addClass('active');
+        });
+
+    });
+</script>

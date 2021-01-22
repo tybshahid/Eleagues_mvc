@@ -1,0 +1,51 @@
+﻿@model Cricket.CustomModels.RulesManagerModel
+<nav class="navbar mb0">
+    <ul class="pager">
+        <li class="pull-left">
+            <div class="btn-group btn-group-sm">
+                <select id="ddlLeague" name="ddlLeague" class="form-control">
+                    <option value="">Please Select</option>
+                    @{foreach (var league in Model.LeaguesAll)
+                        {
+                            if (ViewData["defaultLeague"] != null && (long)ViewData["defaultLeague"] == league.RecordID)
+                            {
+                                <option selected value="@league.RecordID">@league.Name</option>
+                            }
+                            else
+                            {
+                                <option value="@league.RecordID">@league.Name</option>
+                            }
+                        }
+                    }
+                </select>
+            </div>
+        </li>
+    </ul>
+</nav>
+<div id="ViewRulesDiv" style="width: 100%; overflow-y: auto;">
+    @{ Html.RenderPartial("~/Views/Dashboards/_Rules2.cshtml", Model.RulesSelectedLeague); }
+</div>
+<script>
+    $(function () {
+
+        $("#ddlLeague").change(function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Dashboards/FetchRules")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    LeagueID: this.value
+                },
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        $('#ViewRulesDiv').html(result);
+                    });
+                }
+            });
+
+        });
+
+    });
+
+</script>

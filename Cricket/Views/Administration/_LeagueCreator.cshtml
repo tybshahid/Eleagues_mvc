@@ -1,0 +1,239 @@
+﻿@model Cricket.Models.LeaguesMaster
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        League Name
+    </label>
+    <div class="col-sm-4">
+        <input type="text" required class="form-control" name="Name" placeholder="League Name" value="@Model.Name">
+    </div>
+    <label class="col-sm-2 control-label">
+        Difficulty
+    </label>
+    <div class="col-sm-4">
+        <select id="Difficulty" name="Difficulty" class="form-control" required>
+            <option value="">Please Select</option>
+            <option>Easy</option>
+            <option>Pro</option>
+            <option>Veteran</option>
+            <option>Legend</option>
+        </select>
+    </div>
+</div>
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        Format
+    </label>
+    <div class="col-sm-4">
+        <select id="Format" name="Format" class="form-control" required>
+            <option value="">Please Select</option>
+            <option>T20</option>
+            <option>T25</option>
+            <option>T15</option>
+            <option>T50</option>
+            <option>T10</option>
+            <option>T6</option>
+        </select>
+    </div>
+    <label class="col-sm-2 control-label">
+        Rounds
+    </label>
+    <div class="col-sm-4">
+        <select id="Rounds" name="Rounds" class="form-control" required>
+            <option value="">Please Select</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+        </select>
+    </div>
+</div>
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        Match Timing
+    </label>
+    <div class="col-sm-4">
+        <select id="MatchTiming" name="MatchTiming" class="form-control" required>
+            <option value="">Please Select</option>
+            <option>Day</option>
+            <option>Night</option>
+            <option>No Restriction</option>
+        </select>
+    </div>
+    <label class="col-sm-2 control-label">
+        Powerplay
+    </label>
+    <div class="col-sm-4">
+        <input type="text" class="form-control" name="Powerplay" placeholder="Powerplay Details" required value="@Model.Powerplay">
+    </div>
+</div>
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        Normalize Skills
+    </label>
+    <div class="col-sm-4">
+        <select id="NormalizeSkills" name="NormalizeSkills" class="form-control" required>
+            <option value="">Please Select</option>
+            <option>Yes</option>
+            <option>No</option>
+            <option>No Restriction</option>
+        </select>
+    </div>
+    <label class="col-sm-2 control-label">
+        Rope Settings
+    </label>
+    <div class="col-sm-4">
+        <select id="RopeSettings" name="RopeSettings" class="form-control" required>
+            <option value="">Please Select</option>
+            <option>Small</option>
+            <option>Medium</option>
+            <option>Long</option>
+            <option>No Restriction</option>
+        </select>
+    </div>
+</div>
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        Pitch Settings
+    </label>
+    <div class="col-sm-4">
+        <select id="PitchSettings" name="PitchSettings" class="form-control" required>
+            <option value="">Please Select</option>
+            <option>Hard</option>
+            <option>Soft</option>
+            <option>No Restriction</option>
+        </select>
+    </div>
+    <label class="col-sm-2 control-label">
+        Win Points
+    </label>
+    <div class="col-sm-4">
+        <select id="WinPoints" name="WinPoints" class="form-control" required>
+            <option>2</option>
+        </select>
+    </div>
+</div>
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        Lost Points
+    </label>
+    <div class="col-sm-4">
+        <select id="LostPoints" name="LostPoints" class="form-control" required>
+            <option value="">Please Select</option>
+            <option>0</option>
+            <option>-1</option>
+            <option>-2</option>
+        </select>
+    </div>
+    <label class="col-sm-2 control-label">
+        Participation Points
+    </label>
+    <div class="col-sm-4">
+        <select id="ParticipationPoints" name="ParticipationPoints" class="form-control" required>
+            <option value="">Please Select</option>
+            <option>0</option>
+            <option>1</option>
+        </select>
+    </div>
+</div>
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        Start Date
+    </label>
+    <div class="col-sm-4">
+        <input type="date" required class="form-control" name="StartDate" value="@{if (Model.StartDate != null) { @Model.StartDate.Value.ToString("yyyy-MM-dd"); } }">
+    </div>
+    <label class="col-sm-2 control-label">
+        End Date
+    </label>
+    <div class="col-sm-4">
+        <input type="date" class="form-control" name="EndDate" value="@{if (Model.EndDate != null) { @Model.EndDate.Value.ToString("yyyy-MM-dd"); } }">
+    </div>
+</div>
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        Team Format
+    </label>
+    <div class="col-sm-4">
+        <select id="TeamFormat" name="TeamFormat" class="form-control" required>
+            <option value="">Please Select</option>
+            <option>International</option>
+            <option>Custom</option>
+        </select>
+    </div>
+    <label class="col-sm-2 control-label">
+        Closed?
+    </label>
+    <div class="col-sm-4">
+        <select id="IsClosed" name="IsClosed" class="form-control" required>
+            <option value="">Please Select</option>
+            <option>No</option>
+            <option>Yes</option>
+        </select>
+    </div>
+</div>
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        Winner
+    </label>
+    <div class="col-sm-4">
+        <input type="text" class="form-control" name="Winner" placeholder="Winner" value="@Model.Winner">
+    </div>
+    <label class="col-sm-2 control-label">
+        Group League?
+    </label>
+    <div class="col-sm-4">
+        <select id="IsGroupLeague" name="IsGroupLeague" class="form-control" required>
+            <option value="">Please Select</option>
+            <option value="False">No</option>
+            <option value="True">Yes</option>
+        </select>
+    </div>
+</div>
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        Default League?
+    </label>
+    <div class="col-sm-4">
+        <select id="IsDefaultLeague" name="IsDefaultLeague" class="form-control" required>
+            <option value="">Please Select</option>
+            <option value="False">No</option>
+            <option value="True">Yes</option>
+        </select>
+    </div>
+    <label class="col-sm-2 control-label">
+        Category League?
+    </label>
+    <div class="col-sm-4">
+        <select id="IsCategoryLeague" name="IsCategoryLeague" class="form-control" required>
+            <option value="">Please Select</option>
+            <option value="False">No</option>
+            <option value="True">Yes</option>
+        </select>
+    </div>
+</div>
+<script>
+    $(function () {
+
+        @if (Model != null) {
+            <text>
+                    $('#Difficulty').val('@Model.Difficulty');
+                    $('#Format').val('@Model.Format');
+                    $('#Rounds').val('@Model.Rounds');
+                    $('#MatchTiming').val('@Model.MatchTiming');
+                    $('#NormalizeSkills').val('@Model.NormalizeSkills');
+                    $('#RopeSettings').val('@Model.RopeSettings');
+                    $('#PitchSettings').val('@Model.PitchSettings');
+                    $('#WinPoints').val('@Model.WinPoints');
+                    $('#LostPoints').val('@Model.LostPoints');
+                    $('#ParticipationPoints').val('@Model.ParticipationPoints');
+                    $('#TeamFormat').val('@Model.TeamFormat');
+                    $('#IsClosed').val('@Model.IsClosed');
+                    $('#IsGroupLeague').val('@Model.IsGroupLeague');
+                    $('#IsDefaultLeague').val('@Model.IsDefaultLeague');
+                    $('#IsCategoryLeague').val('@Model.IsCategoryLeague');
+            </text>
+        }
+
+    });
+
+</script>

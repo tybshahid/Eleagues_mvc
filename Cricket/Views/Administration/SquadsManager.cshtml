@@ -1,0 +1,158 @@
+﻿@model Cricket.CustomModels.SquadsManagerModel
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h3 class="text-muted mt0">
+        Squads Manager
+    </h3>
+    <form id="frmSquadsManager" autocomplete="off" method="post" class="form-horizontal container pdt box box-solid">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Manage Squads
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">
+                        League & Player
+                    </label>
+                    <div class="col-sm-10">
+                        <select id="ddlLeaguePlayer" name="LeaguePlayerID" class="form-control" required>
+                            <option value="">Please Select</option>
+                            @{
+                                if (Model.LeaguesPlayersAll != null)
+                                {
+                                    foreach (var obj in Model.LeaguesPlayersAll)
+                                    {
+                                        <option value="@obj.RecordID">@obj.PlayersMaster.Name IN @obj.LeaguesMaster.Name</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">
+                        Name
+                    </label>
+                    <div class="col-sm-4">
+                        <input type="text" required class="form-control" id="PlayerName" name="PlayerName" placeholder="Name">
+                    </div>
+                    <label class="col-sm-2 control-label">
+                        Type
+                    </label>
+                    <div class="col-sm-4">
+                        <select id="PlayerType" name="PlayerType" class="form-control" required>
+                            <option value="">Please Select</option>
+                            <option>Batter</option>
+                            <option>Bowler</option>
+                            <option>Keeper</option>
+                            <option>All Rounder</option>
+                            <option>Batting All Rounder</option>
+                            <option>Bowling All Rounder</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">
+                        Origin
+                    </label>
+                    <div class="col-sm-4">
+                        <select id="PlayerOrigin" name="PlayerOrigin" class="form-control" required>
+                            <option value="">Please Select</option>
+                            <option>Local</option>
+                            <option>Overseas</option>
+                        </select>
+                    </div>
+                    <label class="col-sm-2 control-label">
+                        Bowling Style
+                    </label>
+                    <div class="col-sm-4">
+                        <select id="BowlingStyle" name="BowlingStyle" class="form-control" required>
+                            <option value="">Please Select</option>
+                            <option>Fast</option>
+                            <option>Fast Medium</option>
+                            <option>Medium</option>
+                            <option>Spin</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button id="btnAddtoSquad" type="submit" class="btn btn-flat btn-danger btn-sm">
+                            <span class="fa fa-plus-square text-white"></span>&nbsp;&nbsp;Add to Squad
+                        </button>
+                        <a class="btn btn-flat btn-default" data-toggle="tab" href="#MainTableDiv">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Squad Details
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div id="SquadsDivPartial" style="width: 100%;overflow-y: auto;">
+                    @{ Html.RenderPartial("~/Views/Administration/_Squads.cshtml", Model.SquadSelected); }
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+<script>
+    $(function () {
+
+        $("#ddlLeaguePlayer").change(function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Administration/FetchSquads")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    LeaguePlayerID: this.value
+                },
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        $('#SquadsDivPartial').html(result);
+                    });
+                }
+            });
+
+        });
+
+        $("#frmSquadsManager").submit(function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Administration/AddPlayertoSquad")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    LeaguePlayerID: $("#ddlLeaguePlayer").val(),
+                    PlayerName: $('#PlayerName').val(),
+                    PlayerType: $('#PlayerType').val(),
+                    PlayerOrigin: $('#PlayerOrigin').val(),
+                    BowlingStyle: $('#BowlingStyle').val()
+                },
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+
+                        $("#PlayerName").val('');
+                        $("#PlayerType").val('');
+                        $("#PlayerOrigin").val('');
+
+                        $('#SquadsDivPartial').html(result);
+                    });
+                }
+            });
+
+            return false;
+        });
+    });
+</script>

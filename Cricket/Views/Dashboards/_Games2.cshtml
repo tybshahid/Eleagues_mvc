@@ -1,0 +1,254 @@
+﻿@model List<Cricket.Models.Games>
+<style>
+    .table th {
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .table td {
+        text-align: center;
+        white-space: nowrap;
+    }
+</style>
+<div class="text-left" style="margin-top:6px;">
+    <span class="label label-default">
+        Showing&nbsp;<label id="displayRecord">0</label>&nbsp;of&nbsp;
+        <label id="totalRecords">@ViewData["TotalRecords"]</label>
+    </span>&nbsp;
+    <span class="next label label-primary">@ViewData["NewGames"]&nbsp;New</span>
+</div>
+<table data-index="1" class="table table-hover table-striped table-condensed">
+    <thead>
+        <tr>
+            <th>
+                League
+            </th>
+            <th>
+                Share
+            </th>
+            <th>
+                Winner
+            </th>
+            <th>
+                Stage
+            </th>
+            <th>
+                Round
+            </th>
+            <th>
+                Runs.S
+            </th>
+            <th>
+                Ovs.P
+            </th>
+            <th>
+                Wkt.L
+            </th>
+            <th>
+                Opponent
+            </th>
+            <th>
+                Runs.S
+            </th>
+            <th>
+                Ovs.P
+            </th>
+            <th>
+                Wkt.L
+            </th>
+            <th>
+                Result
+            </th>
+            <th>
+                Created On
+            </th>
+            <th>
+                Created By
+            </th>
+            <th>
+                Scorecard
+            </th>
+            @{ if (Session["IsAdmin"] != null && (bool)Session["IsAdmin"])
+                {
+                    <th></th>
+                }
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            Cricket.Models.CricketEntities db = new Cricket.Models.CricketEntities();
+            foreach (var game in Model)
+            {
+                string shareMessage = String
+                        .Format("{0}\n\n*{1}* Defeats *{2}* in Round {3}\n\n{1} Scored {4} for {5} in {6} Overs\n{2} Scored {7} for {8} in {9} Overs\n\n{10}",
+                        game.LeaguesPlayersMaster.LeaguesMaster.Name,
+                        game.LeaguesPlayersMaster.PlayersMaster.Name,
+                        game.PlayersMaster.Name,
+                        game.Round,
+                        game.Runs, game.Wickets, game.Overs,
+                        game.OpponentRuns,
+                        game.OpponentWickets,
+                        game.OpponentOvers,
+                        HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority) + "/Uploads/" + game.FileName
+                        );
+
+                <tr data-id="@game.RecordID">
+                    <td>
+                        <i class="fa fa-book text-success"></i>&nbsp;&nbsp;<strong>@game.LeaguesPlayersMaster.LeaguesMaster.Name</strong>
+                    </td>
+                    <td width="5%">
+                        <a href="#" data-text="@shareMessage" class="btnShareOnWhatsapp"><i class="fa fa-whatsapp fa-2x"></i></a>
+                    </td>
+                    <td>
+                        <span class="label label-success block fa fa-check">
+                            &nbsp;&nbsp;@game.LeaguesPlayersMaster.PlayersMaster.Name
+                            @{
+                                if (game.LeaguesPlayersMaster.LeaguesMaster.IsGroupLeague == true)
+                                {
+                                    <text>&nbsp;-&nbsp;</text>@game.LeaguesPlayersMaster.Groups.GroupName
+                                }
+                            }
+                        </span>
+                    </td>
+                    <td>
+                        @game.Stage
+                    </td>
+                    <td>
+                        <span class="badge badge-primary">@game.Round</span>
+                    </td>
+                    <td>
+                        @game.Runs
+                    </td>
+                    <td>
+                        @game.Overs
+                    </td>
+                    <td>
+                        @game.Wickets
+                    </td>
+                    <td>
+                        <span class="label label-danger block fa fa-times">
+                            &nbsp;&nbsp;@game.PlayersMaster.Name
+
+                            @{
+                                if (game.LeaguesPlayersMaster.LeaguesMaster.IsGroupLeague == true)
+                                {
+                                    <text>&nbsp;-&nbsp;</text>
+                                    @db.LeaguesPlayersMaster.FirstOrDefault(p => p.PlayerID == game.PlayersMaster.RecordID && p.GroupID != 1).Groups.GroupName;
+                                }
+                            }
+
+                        </span>
+                    </td>
+                    <td>
+                        @game.OpponentRuns
+                    </td>
+                    <td>
+                        @game.OpponentOvers
+                    </td>
+                    <td>
+                        @game.OpponentWickets
+                    </td>
+                    <td>
+                        @game.Result
+                    </td>
+                    <td>
+                        @game.CreatedOn.Value.ToString("dd/MMM/yy hh:mm tt")
+                    </td>
+                    <td>
+                        @game.CreatedBy
+                    </td>
+                    <td>
+                        <a href="#" data-file-name="@game.FileName" data-toggle="modal" data-target="#myModal">View</a>
+                    </td>
+                    @{ if (Session["IsAdmin"] != null && (bool)Session["IsAdmin"])
+                        {
+                            <td width="10%">
+                                <button type="button" class="btn btn-flat btn-default btn-sm DeleteGame">
+                                    <span class="fa fa-trash text-danger"></span>
+                                </button>
+                            </td>
+                        }
+                    }
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <img id="imagepreview" src="~/Uploads/NOTFOUND.JPG" alt="Not Found" class="img-responsive" />
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+
+        $('.btnShareOnWhatsapp').click(function () {
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+                var message = $(this).attr("data-text");
+                var encodedMessage = encodeURIComponent(message);
+                var url = "whatsapp://send?text=" + encodedMessage;
+                window.location.href = url;
+            } else {
+                toastr.error('Feature only available for mobile devices');
+            }
+        });
+
+        $('#myModal').on('show.bs.modal', function (e) {
+            var FileName = $(e.relatedTarget).data('file-name'); //alert('~/Uploads/' + FileName);
+
+            if (FileName !== '') {
+                $('#imagepreview').attr('src', '/Uploads/' + FileName);
+            }
+            else {
+                $('#imagepreview').attr('src', '/Uploads/NOTFOUND.JPG');
+            }
+
+        });
+
+        $(".table tbody tr").on('click', function (e) {
+            $(this).addClass('active').addClass('success').siblings().removeClass('active').removeClass('success');
+        });
+
+        var length = $(".table tbody tr").length;
+
+        if (length < 15) {
+            $("#btnPrevious").parent('li').addClass('disabled');
+        }
+        else {
+            $("#btnPrevious").parent('li').removeClass('disabled');
+        }
+
+        $("#displayRecord").text(length);
+
+         $(".DeleteGame").on('click', function () {
+
+            var RecordID = $(this).closest('tr').attr('data-id');
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Dashboards/DeleteGame")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    RecordID: RecordID,
+                    LeagueID: $('#ddlLeague').val(),
+                    WinnerID: $('#ddlWinner').val(),
+                    OpponentID: $('#ddlOpponent').val()
+                },
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        $('#ViewGamesDiv').html(result);
+                        toastr.error('Game Deleted');
+                    });
+                }
+            });
+
+        });
+
+    });
+
+</script>

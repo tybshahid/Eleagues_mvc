@@ -1,0 +1,73 @@
+﻿@model List<Cricket.CustomModels.StarsModel>
+<div class="row">
+    @{
+        int i = 0;
+        foreach (var obj in Model)
+        {
+            i++;
+            if (string.IsNullOrEmpty(obj.Country))
+            {
+                obj.Country = "pk";
+            }
+            if (string.IsNullOrEmpty(obj.FileName))
+            {
+                obj.FileName = "user.png";
+            }
+            <div class="col-lg-2 col-6">
+                <div class="card mb-4">
+                    <h4 class="card-header text-center">@i</h4>
+                    <img class="card-img-top img-fluid"
+                         src="~/Uploads/Players/@obj.FileName"
+                         alt="knownas" />
+                    <div class="card-body p-1">
+                        <h6 class="card-title text-center mt-2 text-truncate">
+                            <span class="flag-icon flag-icon-@obj.Country"></span>
+                            @obj.Name
+                        </h6>
+                    </div>
+                    <ul class="list-group text-center">
+                        <li class="list-group-item">
+                            <span class="badge badge-info p-1 d-block" style="font-size: 13px;">
+                                <i class="fas fa-gamepad"></i>&nbsp;@obj.Games.Value Games
+                            </span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge badge-success p-1 d-block" style="font-size: 13px;">
+                                <i class="fas fa-trophy"></i>&nbsp;@obj.Wins.Value Wins
+                            </span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge badge-warning p-1 d-block" style="font-size: 13px;">
+                                <i class="fas fa-running"></i>&nbsp;@obj.Runs.Value Runs
+                            </span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge badge-secondary p-1 d-block" style="font-size: 13px;">
+                                <i class="fas fa-skull-crossbones"></i>&nbsp;@obj.Wickets.Value Wkts
+                            </span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge badge-success p-1 d-block" style="font-size: 13px;">
+                                @obj.Average.Value.ToString("0.##") Rpo.
+                            </span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge badge-info p-1 d-block" style="font-size: 13px;">
+                                @obj.Economy.Value.ToString("0.##") Eco.
+                            </span>
+                        </li>
+                        <li class="list-group-item">
+                            <span class="badge badge-danger p-1 d-block" style="font-size: 13px;">
+                                <i class="fas fa-medal"></i>&nbsp;Cat @obj.Category
+                            </span>
+                        </li>
+                    </ul>
+                    <div class="card-footer text-muted text-center text-truncate">
+                        <strong>@obj.WinPercentage.Value.ToString("0.##")%</strong>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+

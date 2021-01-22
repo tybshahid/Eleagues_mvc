@@ -1,0 +1,62 @@
+﻿@model List<Cricket.CustomModels.LeaderBoard>
+<div class="text-center mt-3">
+    <h2>Top performers of the week!</h2>
+</div>
+<div class="container mt-3">
+    <div class="row">
+        @{
+            int i = 0;
+            foreach (var obj in Model)
+            {
+                i++;
+                if (string.IsNullOrEmpty(obj.Country))
+                {
+                    obj.Country = "pk";
+                }
+                if (string.IsNullOrEmpty(obj.FileName))
+                {
+                    obj.FileName = "user.png";
+                }
+                <div class="col-lg-2 col-6">
+                    <div class="card mb-4">
+                        <h4 class="card-header text-center">Rank @i</h4>
+                        <img class="card-img-top img-fluid"
+                             src="~/Uploads/Players/@obj.FileName"
+                             alt="knownas" />
+                        <div class="card-body p-1">
+                            <h6 class="card-title text-center mt-2 text-truncate">
+                                <span class="flag-icon flag-icon-@obj.Country"></span>
+                                @obj.Player
+                            </h6>
+                        </div>
+                        <ul class="list-group text-center">
+                            <li class="list-group-item">
+                                <span class="badge badge-info p-1 d-block" style="font-size: 13px;">
+                                    <i class="fas fa-gamepad"></i>&nbsp;@obj.Played Games
+                                </span>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge badge-success p-1 d-block" style="font-size: 13px;">
+                                    <i class="fas fa-check"></i>&nbsp;@obj.Won Wins
+                                </span>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge badge-danger p-1 d-block" style="font-size: 13px;">
+                                    <i class="fas fa-money"></i>&nbsp;@obj.RunsScored Runs
+                                </span>
+                            </li>
+                            <li class="list-group-item">
+                                <span class="badge badge-secondary p-1 d-block" style="font-size: 13px;">
+                                    <i class="fas fa-money"></i>&nbsp;@obj.WicketsTaken Wkts
+                                </span>
+                            </li>
+                        </ul>
+                        <div class="card-footer text-muted text-center text-truncate">
+                            RPO @obj.Average.Value.ToString("0.##")
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>

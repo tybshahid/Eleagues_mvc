@@ -1,0 +1,26 @@
+﻿@model List<Cricket.Models.LeaguesPlayersMaster>
+<label class="col-sm-2 control-label margin-top-sm">
+    Opponent
+</label>
+<div class="col-sm-4">
+    <select id="ddlOpponent" name="ddlOpponent" class="form-control" required>
+        <option value="">Please Select</option>
+        @{
+            if (Model != null && Model.Count > 0)
+            {
+                foreach (var opponent in Model)
+                {
+                    <option value="@opponent.PlayersMaster.RecordID">
+                        @opponent.PlayersMaster.Name
+                        @{
+                            if (opponent.LeaguesMaster.IsGroupLeague == true)
+                            {
+                                <text>&nbsp;from&nbsp;</text>@opponent.Groups.GroupName
+                            }
+                        }
+                    </option>
+                }
+            }
+        }
+    </select>
+</div>

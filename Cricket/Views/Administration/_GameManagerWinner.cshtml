@@ -1,0 +1,49 @@
+﻿@model List<Cricket.Models.LeaguesPlayersMaster>
+<label class="col-sm-2 control-label">
+    Winner
+</label>
+<div class="col-sm-4">
+    <select id="ddlWinner" name="ddlWinner" class="form-control" required>
+        <option value="">Please Select</option>
+        @{
+            if (Model != null && Model.Count > 0)
+            {
+                foreach (var winner in Model)
+                {
+                    <option value="@winner.RecordID">
+                        @winner.PlayersMaster.Name
+                        @{
+                            if (winner.LeaguesMaster.IsGroupLeague == true)
+                            {
+                                <text>&nbsp;from&nbsp;</text>@winner.Groups.GroupName
+                            }
+                        }
+                    </option>
+                }
+            }
+        }
+    </select>
+</div>
+<script>
+    $(function () {
+
+        $("#ddlWinner").change(function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Administration/FetchOpponents")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    WinnerLeaguePlayerID : this.value
+                },
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        $('#OpponentDivPartial').html(result);
+                    });
+                }
+            });
+
+        });
+
+    });
+</script>

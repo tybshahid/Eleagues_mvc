@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cricket Leagues</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="shortcut icon" href="~/favicon.ico" type="image/x-icon" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+        .navbar-collapse.collapse {
+            display: block !important;
+        }
+
+        .navbar-nav > li, .navbar-nav {
+            float: left !important;
+        }
+
+            .navbar-nav.navbar-right:last-child {
+                margin-right: -15px !important;
+            }
+
+        .navbar-right {
+            float: right !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- top navbar-->
+        <header>
+            <nav role="navigation" class="navbar mb0 topnavbar">
+                <div class="nav-wrapper">
+                    <div class="navbar-header">
+                        <a class="navbar-brand">
+                            <img src=@Url.Content("~/Content/images/main.png") style="filter: brightness(0) invert(1);" alt="App Logo" class="brand-logo">
+                        </a>
+                        <div class="h5 app-header hidden-md hidden-lg" style="margin-top:23px;">
+                            <i class="fa fa-trophy fa-warning"></i>
+                            Cricket Leagues - Playstation
+                        </div>
+                    </div>
+                    <div class="h3 app-header hidden-xs hidden-sm">
+                        <i class="fa fa-trophy fa-warning"></i>
+                        Cricket Leagues - Playstation
+                    </div>
+                    <div class="navbar-header pull-right hidden-xs hidden-sm">
+                        <!-- START right navbar-->
+                        <ul class="nav navbar-nav">
+                            <li><label class=""></label></li>
+                            <li>
+                                <div class="user-block-picture">
+                                    <img src=@Url.Content("~/Content/images/tyb.png") alt="Avatar" width="50" height="60" class="img-thumbnail img-circle" />
+                                </div>
+                            </li>
+                            @{ if (Session["IsAuthenticated"] != null && (bool)Session["IsAuthenticated"])
+                                {
+                                    <li>
+                                        <a class="text-white" title="Sign Out" href="@Url.Content("~/Login/Logout")"><span class="fa fa-power-off fa-lg"></span></a>
+                                    </li>
+                                }
+                            }
+                        </ul>
+                        <!-- END right navbar-->
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <!-- main navbar-->
+        <nav class="navbar main-bar">
+            <ul class="nav navbar-nav mt0 ">
+                <li class="active">
+                    <a data-page="@Url.Content("../Dashboards/Dashboards")" class="main-link" href="#">
+                        <i class="fa fa-bar-chart text-primary fa-3x"></i>
+                        <div class="hidden-xs hidden-sm">Dashboards</div>
+                    </a>
+                </li>
+                <li>
+                    <a data-page="@Url.Content("../Charts/Charts")" class="main-link" href="#">
+                        <i class="fa fa-pie-chart text-danger fa-3x"></i>
+                        <div class="hidden-xs hidden-sm">Charts</div>
+                    </a>
+                </li>
+                @{ if (Session["IsAuthenticated"] != null && (bool)Session["IsAuthenticated"])
+                    {
+                        <li>
+                            <a data-page="@Url.Content("../Administration/Administration")" class="main-link" href="#">
+                                <i class="fa fa-laptop text-success fa-3x"></i>
+                                <div class="hidden-xs hidden-sm">Administration</div>
+                            </a>
+                        </li>
+                    }
+                }
+                @{ if (Session["IsAuthenticated"] == null)
+                    {
+                        <li>
+                            <a data-page="@Url.Content("../Login/Login")" class="main-link" href="#">
+                                <i class="fa fa-user-plus text-success fa-3x"></i>
+                                <div class="hidden-xs hidden-sm">Login</div>
+                            </a>
+                        </li>
+                    }
+                }
+                <li>
+                    <a href="@Url.Content("../Stars")">
+                        <i class="fa fa-star text-yellow fa-3x"></i>
+                        <div class="hidden-xs hidden-sm">Stars</div>
+                    </a>
+                </li>
+                @*<li>
+                    <a data-page="@Url.Content("../Home/About")" class="main-link" href="#">
+                        <i class="fa fa-info-circle text-info fa-3x"></i>
+                        <div class="hidden-xs hidden-sm">About</div>
+                    </a>
+                </li>*@
+            </ul>
+        </nav>
+        <!-- main navbar-->
+        <div class="wrapper" data-tk="data-tk">
+            <!-- Main section-->
+            <section>
+                <div class="content-wrap">
+                </div>
+            </section>
+        </div>
+        <!-- /wrapper -->
+    </div>
+    <div class="loader-wrap">
+        <div class="loader-overlay">
+        </div>
+        <div class="loader">
+            <span class="fa fa-spinner fa-pulse"></span>
+        </div>
+    </div>
+    <input type="hidden" id="baseUrl" value="@Url.Content("~")" />
+    @Scripts.Render("~/bundles/scripts")
+</body>
+</html>
+<script>
+    $(function () {
+
+        $('.content-wrap').load('@Url.Content("~/Dashboards/Dashboards")', { __RequestVerificationToken: gettoken() });
+
+        $(".main-link").on('click', function (e) {
+
+            $(".main-bar li").removeClass('active');
+            $(this).parent('li').addClass('active');
+
+            $('.content-wrap').load('@Url.Content("~/")' + $(this).data('page'), { __RequestVerificationToken: gettoken() });
+        });
+
+        toastr.options = {
+            "debug": false,
+            "positionClass": "toast-bottom-right",
+            "onclick": null,
+            "fadeIn": 300,
+            "fadeOut": 1000,
+            "timeOut": 5000,
+            "extendedTimeOut": 1000
+        };
+
+          @{
+            if (Session["LoginError"] != null && Session["LoginError"].ToString() != "") {
+                <text>toastr.error('@Session["LoginError"]')</text>
+                Session["LoginError"] = null;
+            }
+        }
+
+        $(".table tbody tr").on('click', function (e) {
+            //alert(1);
+        });
+
+    });
+
+    function gettoken() {
+        var token = '@Html.AntiForgeryToken()';
+        token = $(token).val();
+        return token;
+    }
+
+</script>
+

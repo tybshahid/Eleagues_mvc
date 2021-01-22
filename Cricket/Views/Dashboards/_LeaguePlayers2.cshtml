@@ -1,0 +1,88 @@
+﻿@model List<Cricket.Models.LeaguesPlayersMaster>
+<style>
+    .table th {
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .table td {
+        text-align: center;
+        white-space: nowrap;
+    }
+</style>
+<div class="text-left" style="margin-top:6px;">
+    <span class="label label-default">
+        Showing
+        <label id="displayRecord">
+            0
+        </label>
+        of
+        <label id="totalRecords">
+            @Model.Count
+        </label>
+    </span>
+</div>
+<table data-index="1" class="table table-hover table-striped table-condensed">
+    <thead>
+        <tr>
+            <th><i class="fa fa-slack"></i></th>
+            <th><i class="fa fa-flag"></i></th>
+            <th>
+                Player Name
+            </th>
+            <th>
+                Category
+            </th>
+            <th>
+                Group Name
+            </th>
+            <th>
+                PSN
+            </th>
+            <th>
+                Is Active
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (Model != null && Model.Count > 0)
+            {
+                int i = 0;
+                foreach (Cricket.Models.LeaguesPlayersMaster objLeaguesPlayer in Model)
+                {
+                    i++;
+                    <tr data-id="@objLeaguesPlayer.RecordID">
+                        <td>
+                            <span class="badge badge-primary">@i</span>
+                        </td>
+                        <td class="flag-icon-background flag-icon-@objLeaguesPlayer.PlayersMaster.Country"></td>
+                        <td>
+                            <i class="fa fa-star text-yellow"></i>&nbsp;&nbsp;<strong>@objLeaguesPlayer.PlayersMaster.Name</strong>
+                        </td>
+                        <td>@objLeaguesPlayer.PlayersMaster.Category</td>
+                        <td>@objLeaguesPlayer.Groups.GroupName</td>
+                        <td>
+                            @objLeaguesPlayer.PlayersMaster.PSN
+                        </td>
+                        <td>
+                            @objLeaguesPlayer.PlayersMaster.IsActive
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+<script>
+    $(function () {
+
+        $(".table tbody tr").on('click', function (e) {
+            $(this).addClass('active').addClass('success').siblings().removeClass('active').removeClass('success');
+        });
+
+        var length = $(".table tbody tr").length;
+        $("#displayRecord").text(length);
+
+    });
+</script>

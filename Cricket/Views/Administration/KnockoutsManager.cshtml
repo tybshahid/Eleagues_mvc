@@ -1,0 +1,190 @@
+﻿@model Cricket.CustomModels.KnockoutsManagerModel
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h3 class="text-muted mt0">
+        Knockouts Manager
+    </h3>
+    <form id="frmKnockoutsManager" autocomplete="off" method="post" class="form-horizontal container pdt box box-solid">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Manage Knockouts
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">
+                        League Name
+                    </label>
+                    <div class="col-sm-4">
+                        <select id="ddlLeague" name="LeagueID" class="form-control" required>
+                            <option value="">Please Select</option>
+                            @{
+                                if (Model.LeaguesAll != null)
+                                {
+                                    foreach (var league in Model.LeaguesAll)
+                                    {
+                                        <option value="@league.RecordID">@league.Name</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <label class="col-sm-2 control-label">
+                        Stage
+                    </label>
+                    <div class="col-sm-4">
+                        <select id="ddlStage" name="Stage" class="form-control" required>
+                            <option value="">Please Select</option>
+                            <option>Pre Quarter Final</option>
+                            <option>Quarter Final</option>
+                            <option>Semi Final</option>
+                            <option>Final</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">
+                        Player 1
+                    </label>
+                    <div class="col-sm-4">
+                        <select id="ddlPlayer1" name="PlayerID1" class="form-control" required>
+                            <option value="">Please Select</option>
+                            @{
+                                if (Model.PlayersAll != null)
+                                {
+                                    foreach (var player in Model.PlayersAll)
+                                    {
+                                        <option value="@player.RecordID">@player.Name</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <label class="col-sm-2 control-label">
+                        Player 2
+                    </label>
+                    <div class="col-sm-4">
+                        <select id="ddlPlayer2" name="PlayerID2" class="form-control" required>
+                            <option value="">Please Select</option>
+                            @{
+                                if (Model.PlayersAll != null)
+                                {
+                                    foreach (var player in Model.PlayersAll)
+                                    {
+                                        <option value="@player.RecordID">@player.Name</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">
+                        Winner
+                    </label>
+                    <div class="col-sm-4">
+                        <select id="ddlWinner" name="Winner" class="form-control">
+                            <option value="">Please Select</option>
+                            <option>Player 1</option>
+                            <option>Player 2</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-flat btn-success btn-sm">
+                            <span class="fa fa-plus-square text-white"></span>&nbsp;&nbsp;Save
+                        </button>
+                        <button id="btnReset" type="button" class="btn btn-flat btn-danger btn-sm">
+                            <span class="fa fa-minus-square text-white"></span>&nbsp;&nbsp;Reset
+                        </button>
+                        <a class="btn btn-flat btn-default" data-toggle="tab" href="#MainTableDiv">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Knockouts
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div id="KnockoutsDivPartial" class="table-responsive">
+                    @{ Html.RenderPartial("~/Views/Administration/_Knockouts.cshtml", Model.Knockouts); }
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+<script>
+    $(function () {
+
+        $("#btnReset").click(function () {
+            $("#ddlPlayer1").val('');
+            $("#ddlPlayer2").val('');
+            $("#ddlStage").val('');
+            $("#ddlWinner").val('');
+        });
+
+        $("#ddlLeague").change(function () {
+
+            $("#ddlPlayer1").val('');
+            $("#ddlPlayer2").val('');
+            $("#ddlStage").val('');
+            $("#ddlWinner").val('');
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Administration/FetchKnockouts")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    LeagueID: this.value
+                },
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        $('#KnockoutsDivPartial').html(result);
+                    });
+                }
+            });
+
+        });
+
+        $("#frmKnockoutsManager").submit(function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Administration/SaveKnockout")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    LeagueID: $("#ddlLeague").val(),
+                    Player1ID: $('#ddlPlayer1').val(),
+                    Player2ID: $('#ddlPlayer2').val(),
+                    Stage: $('#ddlStage').val(),
+                    Winner: $('#ddlWinner').val(),
+                },
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+
+                        $("#ddlPlayer1").val('');
+                        $("#ddlPlayer2").val('');
+                        $("#ddlStage").val('');
+                        $("#ddlWinner").val('');
+
+                        $('#KnockoutsDivPartial').html(result);
+                    });
+                }
+            });
+
+            return false;
+        });
+
+
+    });
+</script>

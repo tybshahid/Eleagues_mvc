@@ -1,0 +1,845 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CricketModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Games">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LeaguesPlayersID" Type="bigint" />
+          <Property Name="OpponentPlayerID" Type="bigint" />
+          <Property Name="Stage" Type="nvarchar" MaxLength="50" />
+          <Property Name="Round" Type="int" />
+          <Property Name="Runs" Type="int" />
+          <Property Name="Overs" Type="nvarchar" MaxLength="50" />
+          <Property Name="Wickets" Type="int" />
+          <Property Name="Fifties" Type="int" />
+          <Property Name="Hundreds" Type="int" />
+          <Property Name="FiveWickets" Type="int" />
+          <Property Name="InningsHigh" Type="int" />
+          <Property Name="OpponentRuns" Type="int" />
+          <Property Name="OpponentOvers" Type="nvarchar" MaxLength="50" />
+          <Property Name="OpponentWickets" Type="int" />
+          <Property Name="OpponentFifties" Type="int" />
+          <Property Name="OpponentHundreds" Type="int" />
+          <Property Name="OpponentFiveWickets" Type="int" />
+          <Property Name="OpponentInningsHigh" Type="int" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="Result" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsApproved" Type="bit" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="Groups">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="GroupName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Knockouts">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Number" Type="int" />
+          <Property Name="LeagueID" Type="bigint" />
+          <Property Name="Player1ID" Type="bigint" />
+          <Property Name="Player2ID" Type="bigint" />
+          <Property Name="Stage" Type="nvarchar" MaxLength="50" />
+          <Property Name="WinnerID" Type="bigint" />
+          <Property Name="CreatedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="LeaguesMaster">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="Difficulty" Type="nvarchar" MaxLength="50" />
+          <Property Name="Format" Type="nvarchar" MaxLength="50" />
+          <Property Name="Rounds" Type="nvarchar" MaxLength="50" />
+          <Property Name="TeamFormat" Type="nvarchar" MaxLength="50" />
+          <Property Name="MatchTiming" Type="nvarchar" MaxLength="50" />
+          <Property Name="Powerplay" Type="nvarchar" MaxLength="50" />
+          <Property Name="NormalizeSkills" Type="nvarchar" MaxLength="50" />
+          <Property Name="RopeSettings" Type="nvarchar" MaxLength="50" />
+          <Property Name="PitchSettings" Type="nvarchar" MaxLength="50" />
+          <Property Name="WinPoints" Type="int" />
+          <Property Name="LostPoints" Type="int" />
+          <Property Name="ParticipationPoints" Type="int" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="IsClosed" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="Winner" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsGroupLeague" Type="bit" />
+          <Property Name="IsDefaultLeague" Type="bit" />
+          <Property Name="IsCategoryLeague" Type="bit" />
+        </EntityType>
+        <EntityType Name="LeaguesPlayersMaster">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LeagueID" Type="bigint" />
+          <Property Name="PlayerID" Type="bigint" />
+          <Property Name="TeamName" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="GroupID" Type="int" />
+        </EntityType>
+        <EntityType Name="LeaguesPlayersTeamMaster">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LeaguesPlayersID" Type="bigint" />
+          <Property Name="PlayerName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PlayerType" Type="nvarchar" MaxLength="50" />
+          <Property Name="PlayerOrigin" Type="nvarchar" MaxLength="50" />
+          <Property Name="BowlingStyle" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="LeaguesRulesMaster">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LeagueID" Type="bigint" />
+          <Property Name="Rule" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="PlayersMaster">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" />
+          <Property Name="NickName" Type="nvarchar" MaxLength="50" />
+          <Property Name="PSN" Type="nvarchar" MaxLength="50" />
+          <Property Name="Age" Type="int" />
+          <Property Name="Country" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+          <Property Name="Mobile2" Type="nvarchar" MaxLength="50" />
+          <Property Name="Photo" Type="image" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="50" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="CreatedBy" Type="nvarchar" MaxLength="50" />
+          <Property Name="CreatedOn" Type="datetime" />
+          <Property Name="FileName" Type="nvarchar" MaxLength="255" />
+          <Property Name="Category" Type="int" />
+        </EntityType>
+        <Association Name="FK_Games_LeaguesPlayersMaster">
+          <End Role="LeaguesPlayersMaster" Type="Self.LeaguesPlayersMaster" Multiplicity="0..1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeaguesPlayersMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="LeaguesPlayersID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_PlayersMaster">
+          <End Role="PlayersMaster" Type="Self.PlayersMaster" Multiplicity="0..1" />
+          <End Role="Games" Type="Self.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayersMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="OpponentPlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Knockouts_LeaguesMaster">
+          <End Role="LeaguesMaster" Type="Self.LeaguesMaster" Multiplicity="0..1" />
+          <End Role="Knockouts" Type="Self.Knockouts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeaguesMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="Knockouts">
+              <PropertyRef Name="LeagueID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Knockouts_Players1">
+          <End Role="PlayersMaster" Type="Self.PlayersMaster" Multiplicity="0..1" />
+          <End Role="Knockouts" Type="Self.Knockouts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayersMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="Knockouts">
+              <PropertyRef Name="Player1ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Knockouts_Players2">
+          <End Role="PlayersMaster" Type="Self.PlayersMaster" Multiplicity="0..1" />
+          <End Role="Knockouts" Type="Self.Knockouts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayersMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="Knockouts">
+              <PropertyRef Name="Player2ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Knockouts_Winner">
+          <End Role="PlayersMaster" Type="Self.PlayersMaster" Multiplicity="0..1" />
+          <End Role="Knockouts" Type="Self.Knockouts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayersMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="Knockouts">
+              <PropertyRef Name="WinnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaguesPlayersMaster_Groups">
+          <End Role="Groups" Type="Self.Groups" Multiplicity="0..1" />
+          <End Role="LeaguesPlayersMaster" Type="Self.LeaguesPlayersMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="LeaguesPlayersMaster">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaguesPlayersMaster_LeaguesMaster">
+          <End Role="LeaguesMaster" Type="Self.LeaguesMaster" Multiplicity="0..1" />
+          <End Role="LeaguesPlayersMaster" Type="Self.LeaguesPlayersMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeaguesMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="LeaguesPlayersMaster">
+              <PropertyRef Name="LeagueID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaguesPlayersMaster_PlayersMaster">
+          <End Role="PlayersMaster" Type="Self.PlayersMaster" Multiplicity="0..1" />
+          <End Role="LeaguesPlayersMaster" Type="Self.LeaguesPlayersMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayersMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="LeaguesPlayersMaster">
+              <PropertyRef Name="PlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaguesPlayersTeamMaster_LeaguesPlayersMaster">
+          <End Role="LeaguesPlayersMaster" Type="Self.LeaguesPlayersMaster" Multiplicity="0..1" />
+          <End Role="LeaguesPlayersTeamMaster" Type="Self.LeaguesPlayersTeamMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeaguesPlayersMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="LeaguesPlayersTeamMaster">
+              <PropertyRef Name="LeaguesPlayersID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaguesRulesMaster_LeaguesMaster">
+          <End Role="LeaguesMaster" Type="Self.LeaguesMaster" Multiplicity="0..1" />
+          <End Role="LeaguesRulesMaster" Type="Self.LeaguesRulesMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeaguesMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="LeaguesRulesMaster">
+              <PropertyRef Name="LeagueID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CricketModelStoreContainer">
+          <EntitySet Name="Games" EntityType="Self.Games" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Groups" EntityType="Self.Groups" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Knockouts" EntityType="Self.Knockouts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LeaguesMaster" EntityType="Self.LeaguesMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LeaguesPlayersMaster" EntityType="Self.LeaguesPlayersMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LeaguesPlayersTeamMaster" EntityType="Self.LeaguesPlayersTeamMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LeaguesRulesMaster" EntityType="Self.LeaguesRulesMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlayersMaster" EntityType="Self.PlayersMaster" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Games_LeaguesPlayersMaster" Association="Self.FK_Games_LeaguesPlayersMaster">
+            <End Role="LeaguesPlayersMaster" EntitySet="LeaguesPlayersMaster" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_PlayersMaster" Association="Self.FK_Games_PlayersMaster">
+            <End Role="PlayersMaster" EntitySet="PlayersMaster" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Knockouts_LeaguesMaster" Association="Self.FK_Knockouts_LeaguesMaster">
+            <End Role="LeaguesMaster" EntitySet="LeaguesMaster" />
+            <End Role="Knockouts" EntitySet="Knockouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Knockouts_Players1" Association="Self.FK_Knockouts_Players1">
+            <End Role="PlayersMaster" EntitySet="PlayersMaster" />
+            <End Role="Knockouts" EntitySet="Knockouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Knockouts_Players2" Association="Self.FK_Knockouts_Players2">
+            <End Role="PlayersMaster" EntitySet="PlayersMaster" />
+            <End Role="Knockouts" EntitySet="Knockouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Knockouts_Winner" Association="Self.FK_Knockouts_Winner">
+            <End Role="PlayersMaster" EntitySet="PlayersMaster" />
+            <End Role="Knockouts" EntitySet="Knockouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaguesPlayersMaster_Groups" Association="Self.FK_LeaguesPlayersMaster_Groups">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="LeaguesPlayersMaster" EntitySet="LeaguesPlayersMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaguesPlayersMaster_LeaguesMaster" Association="Self.FK_LeaguesPlayersMaster_LeaguesMaster">
+            <End Role="LeaguesMaster" EntitySet="LeaguesMaster" />
+            <End Role="LeaguesPlayersMaster" EntitySet="LeaguesPlayersMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaguesPlayersMaster_PlayersMaster" Association="Self.FK_LeaguesPlayersMaster_PlayersMaster">
+            <End Role="PlayersMaster" EntitySet="PlayersMaster" />
+            <End Role="LeaguesPlayersMaster" EntitySet="LeaguesPlayersMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaguesPlayersTeamMaster_LeaguesPlayersMaster" Association="Self.FK_LeaguesPlayersTeamMaster_LeaguesPlayersMaster">
+            <End Role="LeaguesPlayersMaster" EntitySet="LeaguesPlayersMaster" />
+            <End Role="LeaguesPlayersTeamMaster" EntitySet="LeaguesPlayersTeamMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaguesRulesMaster_LeaguesMaster" Association="Self.FK_LeaguesRulesMaster_LeaguesMaster">
+            <End Role="LeaguesMaster" EntitySet="LeaguesMaster" />
+            <End Role="LeaguesRulesMaster" EntitySet="LeaguesRulesMaster" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CricketModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CricketEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="LeaguesPlayersTeamMaster" EntityType="CricketModel.LeaguesPlayersTeamMaster" />
+          <EntitySet Name="LeaguesRulesMaster" EntityType="CricketModel.LeaguesRulesMaster" />
+          <EntitySet Name="Groups" EntityType="CricketModel.Groups" />
+          <EntitySet Name="LeaguesPlayersMaster" EntityType="CricketModel.LeaguesPlayersMaster" />
+          <AssociationSet Name="FK_LeaguesPlayersMaster_Groups" Association="CricketModel.FK_LeaguesPlayersMaster_Groups">
+            <End Role="Groups" EntitySet="Groups" />
+            <End Role="LeaguesPlayersMaster" EntitySet="LeaguesPlayersMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaguesPlayersTeamMaster_LeaguesPlayersMaster" Association="CricketModel.FK_LeaguesPlayersTeamMaster_LeaguesPlayersMaster">
+            <End Role="LeaguesPlayersMaster" EntitySet="LeaguesPlayersMaster" />
+            <End Role="LeaguesPlayersTeamMaster" EntitySet="LeaguesPlayersTeamMaster" />
+          </AssociationSet>
+          <EntitySet Name="Games" EntityType="CricketModel.Games" />
+          <AssociationSet Name="FK_Games_LeaguesPlayersMaster" Association="CricketModel.FK_Games_LeaguesPlayersMaster">
+            <End Role="LeaguesPlayersMaster" EntitySet="LeaguesPlayersMaster" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <EntitySet Name="Knockouts" EntityType="CricketModel.Knockouts" />
+          <EntitySet Name="PlayersMaster" EntityType="CricketModel.PlayersMaster" />
+          <AssociationSet Name="FK_Games_PlayersMaster" Association="CricketModel.FK_Games_PlayersMaster">
+            <End Role="PlayersMaster" EntitySet="PlayersMaster" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Knockouts_Players1" Association="CricketModel.FK_Knockouts_Players1">
+            <End Role="PlayersMaster" EntitySet="PlayersMaster" />
+            <End Role="Knockouts" EntitySet="Knockouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Knockouts_Players2" Association="CricketModel.FK_Knockouts_Players2">
+            <End Role="PlayersMaster" EntitySet="PlayersMaster" />
+            <End Role="Knockouts" EntitySet="Knockouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Knockouts_Winner" Association="CricketModel.FK_Knockouts_Winner">
+            <End Role="PlayersMaster" EntitySet="PlayersMaster" />
+            <End Role="Knockouts" EntitySet="Knockouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaguesPlayersMaster_PlayersMaster" Association="CricketModel.FK_LeaguesPlayersMaster_PlayersMaster">
+            <End Role="PlayersMaster" EntitySet="PlayersMaster" />
+            <End Role="LeaguesPlayersMaster" EntitySet="LeaguesPlayersMaster" />
+          </AssociationSet>
+          <EntitySet Name="LeaguesMaster" EntityType="CricketModel.LeaguesMaster" />
+          <AssociationSet Name="FK_Knockouts_LeaguesMaster" Association="CricketModel.FK_Knockouts_LeaguesMaster">
+            <End Role="LeaguesMaster" EntitySet="LeaguesMaster" />
+            <End Role="Knockouts" EntitySet="Knockouts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaguesPlayersMaster_LeaguesMaster" Association="CricketModel.FK_LeaguesPlayersMaster_LeaguesMaster">
+            <End Role="LeaguesMaster" EntitySet="LeaguesMaster" />
+            <End Role="LeaguesPlayersMaster" EntitySet="LeaguesPlayersMaster" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LeaguesRulesMaster_LeaguesMaster" Association="CricketModel.FK_LeaguesRulesMaster_LeaguesMaster">
+            <End Role="LeaguesMaster" EntitySet="LeaguesMaster" />
+            <End Role="LeaguesRulesMaster" EntitySet="LeaguesRulesMaster" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="LeaguesPlayersTeamMaster">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LeaguesPlayersID" Type="Int64" />
+          <Property Name="PlayerName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PlayerType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PlayerOrigin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="BowlingStyle" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="LeaguesPlayersMaster" Relationship="CricketModel.FK_LeaguesPlayersTeamMaster_LeaguesPlayersMaster" FromRole="LeaguesPlayersTeamMaster" ToRole="LeaguesPlayersMaster" />
+        </EntityType>
+        <EntityType Name="LeaguesRulesMaster">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LeagueID" Type="Int64" />
+          <Property Name="Rule" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="LeaguesMaster" Relationship="CricketModel.FK_LeaguesRulesMaster_LeaguesMaster" FromRole="LeaguesRulesMaster" ToRole="LeaguesMaster" />
+        </EntityType>
+        <EntityType Name="Groups">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LeaguesPlayersMaster" Relationship="CricketModel.FK_LeaguesPlayersMaster_Groups" FromRole="Groups" ToRole="LeaguesPlayersMaster" />
+        </EntityType>
+        <EntityType Name="LeaguesPlayersMaster">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LeagueID" Type="Int64" />
+          <Property Name="PlayerID" Type="Int64" />
+          <Property Name="TeamName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="GroupID" Type="Int32" />
+          <NavigationProperty Name="Groups" Relationship="CricketModel.FK_LeaguesPlayersMaster_Groups" FromRole="LeaguesPlayersMaster" ToRole="Groups" />
+          <NavigationProperty Name="LeaguesPlayersTeamMaster" Relationship="CricketModel.FK_LeaguesPlayersTeamMaster_LeaguesPlayersMaster" FromRole="LeaguesPlayersMaster" ToRole="LeaguesPlayersTeamMaster" />
+          <NavigationProperty Name="Games" Relationship="CricketModel.FK_Games_LeaguesPlayersMaster" FromRole="LeaguesPlayersMaster" ToRole="Games" />
+          <NavigationProperty Name="PlayersMaster" Relationship="CricketModel.FK_LeaguesPlayersMaster_PlayersMaster" FromRole="LeaguesPlayersMaster" ToRole="PlayersMaster" />
+          <NavigationProperty Name="LeaguesMaster" Relationship="CricketModel.FK_LeaguesPlayersMaster_LeaguesMaster" FromRole="LeaguesPlayersMaster" ToRole="LeaguesMaster" />
+        </EntityType>
+        <Association Name="FK_LeaguesPlayersMaster_Groups">
+          <End Type="CricketModel.Groups" Role="Groups" Multiplicity="0..1" />
+          <End Type="CricketModel.LeaguesPlayersMaster" Role="LeaguesPlayersMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Groups">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="LeaguesPlayersMaster">
+              <PropertyRef Name="GroupID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaguesPlayersTeamMaster_LeaguesPlayersMaster">
+          <End Type="CricketModel.LeaguesPlayersMaster" Role="LeaguesPlayersMaster" Multiplicity="0..1" />
+          <End Type="CricketModel.LeaguesPlayersTeamMaster" Role="LeaguesPlayersTeamMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeaguesPlayersMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="LeaguesPlayersTeamMaster">
+              <PropertyRef Name="LeaguesPlayersID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Games">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LeaguesPlayersID" Type="Int64" />
+          <Property Name="OpponentPlayerID" Type="Int64" />
+          <Property Name="Stage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Round" Type="Int32" />
+          <Property Name="Runs" Type="Int32" />
+          <Property Name="Overs" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Wickets" Type="Int32" />
+          <Property Name="Fifties" Type="Int32" />
+          <Property Name="Hundreds" Type="Int32" />
+          <Property Name="FiveWickets" Type="Int32" />
+          <Property Name="InningsHigh" Type="Int32" />
+          <Property Name="OpponentRuns" Type="Int32" />
+          <Property Name="OpponentOvers" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OpponentWickets" Type="Int32" />
+          <Property Name="OpponentFifties" Type="Int32" />
+          <Property Name="OpponentHundreds" Type="Int32" />
+          <Property Name="OpponentFiveWickets" Type="Int32" />
+          <Property Name="OpponentInningsHigh" Type="Int32" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="Result" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsApproved" Type="Boolean" />
+          <Property Name="FileName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="LeaguesPlayersMaster" Relationship="CricketModel.FK_Games_LeaguesPlayersMaster" FromRole="Games" ToRole="LeaguesPlayersMaster" />
+          <NavigationProperty Name="PlayersMaster" Relationship="CricketModel.FK_Games_PlayersMaster" FromRole="Games" ToRole="PlayersMaster" />
+        </EntityType>
+        <Association Name="FK_Games_LeaguesPlayersMaster">
+          <End Type="CricketModel.LeaguesPlayersMaster" Role="LeaguesPlayersMaster" Multiplicity="0..1" />
+          <End Type="CricketModel.Games" Role="Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeaguesPlayersMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="LeaguesPlayersID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Knockouts">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Number" Type="Int32" />
+          <Property Name="LeagueID" Type="Int64" />
+          <Property Name="Player1ID" Type="Int64" />
+          <Property Name="Player2ID" Type="Int64" />
+          <Property Name="Stage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WinnerID" Type="Int64" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="PlayersMaster" Relationship="CricketModel.FK_Knockouts_Players1" FromRole="Knockouts" ToRole="PlayersMaster" />
+          <NavigationProperty Name="PlayersMaster1" Relationship="CricketModel.FK_Knockouts_Players2" FromRole="Knockouts" ToRole="PlayersMaster" />
+          <NavigationProperty Name="PlayersMaster2" Relationship="CricketModel.FK_Knockouts_Winner" FromRole="Knockouts" ToRole="PlayersMaster" />
+          <NavigationProperty Name="LeaguesMaster" Relationship="CricketModel.FK_Knockouts_LeaguesMaster" FromRole="Knockouts" ToRole="LeaguesMaster" />
+          </EntityType>
+        <EntityType Name="PlayersMaster">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NickName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PSN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Age" Type="Int32" />
+          <Property Name="Country" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile2" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Photo" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="UserID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="FileName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="Category" Type="Int32" />
+          <NavigationProperty Name="Games" Relationship="CricketModel.FK_Games_PlayersMaster" FromRole="PlayersMaster" ToRole="Games" />
+          <NavigationProperty Name="Knockouts" Relationship="CricketModel.FK_Knockouts_Players1" FromRole="PlayersMaster" ToRole="Knockouts" />
+          <NavigationProperty Name="Knockouts1" Relationship="CricketModel.FK_Knockouts_Players2" FromRole="PlayersMaster" ToRole="Knockouts" />
+          <NavigationProperty Name="Knockouts2" Relationship="CricketModel.FK_Knockouts_Winner" FromRole="PlayersMaster" ToRole="Knockouts" />
+          <NavigationProperty Name="LeaguesPlayersMaster" Relationship="CricketModel.FK_LeaguesPlayersMaster_PlayersMaster" FromRole="PlayersMaster" ToRole="LeaguesPlayersMaster" />
+        </EntityType>
+        <Association Name="FK_Games_PlayersMaster">
+          <End Type="CricketModel.PlayersMaster" Role="PlayersMaster" Multiplicity="0..1" />
+          <End Type="CricketModel.Games" Role="Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayersMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="OpponentPlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Knockouts_Players1">
+          <End Type="CricketModel.PlayersMaster" Role="PlayersMaster" Multiplicity="0..1" />
+          <End Type="CricketModel.Knockouts" Role="Knockouts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayersMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="Knockouts">
+              <PropertyRef Name="Player1ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Knockouts_Players2">
+          <End Type="CricketModel.PlayersMaster" Role="PlayersMaster" Multiplicity="0..1" />
+          <End Type="CricketModel.Knockouts" Role="Knockouts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayersMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="Knockouts">
+              <PropertyRef Name="Player2ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Knockouts_Winner">
+          <End Type="CricketModel.PlayersMaster" Role="PlayersMaster" Multiplicity="0..1" />
+          <End Type="CricketModel.Knockouts" Role="Knockouts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayersMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="Knockouts">
+              <PropertyRef Name="WinnerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaguesPlayersMaster_PlayersMaster">
+          <End Type="CricketModel.PlayersMaster" Role="PlayersMaster" Multiplicity="0..1" />
+          <End Type="CricketModel.LeaguesPlayersMaster" Role="LeaguesPlayersMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PlayersMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="LeaguesPlayersMaster">
+              <PropertyRef Name="PlayerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="LeaguesMaster">
+          <Key>
+            <PropertyRef Name="RecordID" />
+          </Key>
+          <Property Name="RecordID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Difficulty" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Format" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Rounds" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TeamFormat" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MatchTiming" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Powerplay" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="NormalizeSkills" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="RopeSettings" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PitchSettings" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="WinPoints" Type="Int32" />
+          <Property Name="LostPoints" Type="Int32" />
+          <Property Name="ParticipationPoints" Type="Int32" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="IsClosed" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="Winner" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IsGroupLeague" Type="Boolean" />
+          <Property Name="IsDefaultLeague" Type="Boolean" />
+          <Property Name="IsCategoryLeague" Type="Boolean" />
+          <NavigationProperty Name="Knockouts" Relationship="CricketModel.FK_Knockouts_LeaguesMaster" FromRole="LeaguesMaster" ToRole="Knockouts" />
+          <NavigationProperty Name="LeaguesPlayersMaster" Relationship="CricketModel.FK_LeaguesPlayersMaster_LeaguesMaster" FromRole="LeaguesMaster" ToRole="LeaguesPlayersMaster" />
+          <NavigationProperty Name="LeaguesRulesMaster" Relationship="CricketModel.FK_LeaguesRulesMaster_LeaguesMaster" FromRole="LeaguesMaster" ToRole="LeaguesRulesMaster" />
+        </EntityType>
+        <Association Name="FK_Knockouts_LeaguesMaster">
+          <End Type="CricketModel.LeaguesMaster" Role="LeaguesMaster" Multiplicity="0..1" />
+          <End Type="CricketModel.Knockouts" Role="Knockouts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeaguesMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="Knockouts">
+              <PropertyRef Name="LeagueID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaguesPlayersMaster_LeaguesMaster">
+          <End Type="CricketModel.LeaguesMaster" Role="LeaguesMaster" Multiplicity="0..1" />
+          <End Type="CricketModel.LeaguesPlayersMaster" Role="LeaguesPlayersMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeaguesMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="LeaguesPlayersMaster">
+              <PropertyRef Name="LeagueID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LeaguesRulesMaster_LeaguesMaster">
+          <End Type="CricketModel.LeaguesMaster" Role="LeaguesMaster" Multiplicity="0..1" />
+          <End Type="CricketModel.LeaguesRulesMaster" Role="LeaguesRulesMaster" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LeaguesMaster">
+              <PropertyRef Name="RecordID" />
+            </Principal>
+            <Dependent Role="LeaguesRulesMaster">
+              <PropertyRef Name="LeagueID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CricketModelStoreContainer" CdmEntityContainer="CricketEntities">
+          <EntitySetMapping Name="LeaguesPlayersTeamMaster">
+            <EntityTypeMapping TypeName="CricketModel.LeaguesPlayersTeamMaster">
+              <MappingFragment StoreEntitySet="LeaguesPlayersTeamMaster">
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="BowlingStyle" ColumnName="BowlingStyle" />
+                <ScalarProperty Name="PlayerOrigin" ColumnName="PlayerOrigin" />
+                <ScalarProperty Name="PlayerType" ColumnName="PlayerType" />
+                <ScalarProperty Name="PlayerName" ColumnName="PlayerName" />
+                <ScalarProperty Name="LeaguesPlayersID" ColumnName="LeaguesPlayersID" />
+                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LeaguesRulesMaster">
+            <EntityTypeMapping TypeName="CricketModel.LeaguesRulesMaster">
+              <MappingFragment StoreEntitySet="LeaguesRulesMaster">
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="Rule" ColumnName="Rule" />
+                <ScalarProperty Name="LeagueID" ColumnName="LeagueID" />
+                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Groups">
+            <EntityTypeMapping TypeName="CricketModel.Groups">
+              <MappingFragment StoreEntitySet="Groups">
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LeaguesPlayersMaster">
+            <EntityTypeMapping TypeName="CricketModel.LeaguesPlayersMaster">
+              <MappingFragment StoreEntitySet="LeaguesPlayersMaster">
+                <ScalarProperty Name="GroupID" ColumnName="GroupID" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="TeamName" ColumnName="TeamName" />
+                <ScalarProperty Name="PlayerID" ColumnName="PlayerID" />
+                <ScalarProperty Name="LeagueID" ColumnName="LeagueID" />
+                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="CricketModel.Games">
+              <MappingFragment StoreEntitySet="Games">
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+                <ScalarProperty Name="Result" ColumnName="Result" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="OpponentInningsHigh" ColumnName="OpponentInningsHigh" />
+                <ScalarProperty Name="OpponentFiveWickets" ColumnName="OpponentFiveWickets" />
+                <ScalarProperty Name="OpponentHundreds" ColumnName="OpponentHundreds" />
+                <ScalarProperty Name="OpponentFifties" ColumnName="OpponentFifties" />
+                <ScalarProperty Name="OpponentWickets" ColumnName="OpponentWickets" />
+                <ScalarProperty Name="OpponentOvers" ColumnName="OpponentOvers" />
+                <ScalarProperty Name="OpponentRuns" ColumnName="OpponentRuns" />
+                <ScalarProperty Name="InningsHigh" ColumnName="InningsHigh" />
+                <ScalarProperty Name="FiveWickets" ColumnName="FiveWickets" />
+                <ScalarProperty Name="Hundreds" ColumnName="Hundreds" />
+                <ScalarProperty Name="Fifties" ColumnName="Fifties" />
+                <ScalarProperty Name="Wickets" ColumnName="Wickets" />
+                <ScalarProperty Name="Overs" ColumnName="Overs" />
+                <ScalarProperty Name="Runs" ColumnName="Runs" />
+                <ScalarProperty Name="Round" ColumnName="Round" />
+                <ScalarProperty Name="Stage" ColumnName="Stage" />
+                <ScalarProperty Name="OpponentPlayerID" ColumnName="OpponentPlayerID" />
+                <ScalarProperty Name="LeaguesPlayersID" ColumnName="LeaguesPlayersID" />
+                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Knockouts">
+            <EntityTypeMapping TypeName="CricketModel.Knockouts">
+              <MappingFragment StoreEntitySet="Knockouts">
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="WinnerID" ColumnName="WinnerID" />
+                <ScalarProperty Name="Stage" ColumnName="Stage" />
+                <ScalarProperty Name="Player2ID" ColumnName="Player2ID" />
+                <ScalarProperty Name="Player1ID" ColumnName="Player1ID" />
+                <ScalarProperty Name="LeagueID" ColumnName="LeagueID" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayersMaster">
+            <EntityTypeMapping TypeName="CricketModel.PlayersMaster">
+              <MappingFragment StoreEntitySet="PlayersMaster">
+                <ScalarProperty Name="Category" ColumnName="Category" />
+                <ScalarProperty Name="FileName" ColumnName="FileName" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Photo" ColumnName="Photo" />
+                <ScalarProperty Name="Mobile2" ColumnName="Mobile2" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="Age" ColumnName="Age" />
+                <ScalarProperty Name="PSN" ColumnName="PSN" />
+                <ScalarProperty Name="NickName" ColumnName="NickName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LeaguesMaster">
+            <EntityTypeMapping TypeName="CricketModel.LeaguesMaster">
+              <MappingFragment StoreEntitySet="LeaguesMaster">
+                <ScalarProperty Name="IsCategoryLeague" ColumnName="IsCategoryLeague" />
+                <ScalarProperty Name="IsDefaultLeague" ColumnName="IsDefaultLeague" />
+                <ScalarProperty Name="IsGroupLeague" ColumnName="IsGroupLeague" />
+                <ScalarProperty Name="Winner" ColumnName="Winner" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="IsClosed" ColumnName="IsClosed" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="ParticipationPoints" ColumnName="ParticipationPoints" />
+                <ScalarProperty Name="LostPoints" ColumnName="LostPoints" />
+                <ScalarProperty Name="WinPoints" ColumnName="WinPoints" />
+                <ScalarProperty Name="PitchSettings" ColumnName="PitchSettings" />
+                <ScalarProperty Name="RopeSettings" ColumnName="RopeSettings" />
+                <ScalarProperty Name="NormalizeSkills" ColumnName="NormalizeSkills" />
+                <ScalarProperty Name="Powerplay" ColumnName="Powerplay" />
+                <ScalarProperty Name="MatchTiming" ColumnName="MatchTiming" />
+                <ScalarProperty Name="TeamFormat" ColumnName="TeamFormat" />
+                <ScalarProperty Name="Rounds" ColumnName="Rounds" />
+                <ScalarProperty Name="Format" ColumnName="Format" />
+                <ScalarProperty Name="Difficulty" ColumnName="Difficulty" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RecordID" ColumnName="RecordID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

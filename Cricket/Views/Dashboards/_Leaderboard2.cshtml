@@ -1,0 +1,153 @@
+﻿@model List<Cricket.CustomModels.LeaderBoard>
+<style>
+    .table th {
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .table td {
+        text-align: center;
+        white-space: nowrap;
+    }
+</style>
+<div class="text-left" style="margin-top:6px;">
+    <span class="label label-default">
+        Showing
+        <label id="displayRecord">
+            0
+        </label>
+        of
+        <label id="totalRecords">@ViewData["TotalRecords"]</label>&nbsp;@ViewData["latestLeague"]
+    </span>
+</div>
+<table data-index="1" class="table table-hover table-striped table-condensed">
+    <thead>
+        <tr class="text-center">
+            <th>
+                <i class="fa fa-trophy"></i>
+            </th>
+            <th>
+                <i class="fa fa-flag"></i>
+            </th>
+            <th>
+                Player
+            </th>
+            <th>
+                P
+            </th>
+            <th>
+                W
+            </th>
+            <th>
+                L
+            </th>
+            <th>
+                Points
+            </th>
+            <th>
+                RPO
+            </th>
+            <th>
+                Eco.
+            </th>
+            <th>
+                Runs
+            </th>
+            <th>
+                Wkts
+            </th>
+            <th>
+                Win%
+            </th>
+            <th>
+                Group Name
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 0;
+            foreach (var obj in Model)
+            {
+                i++;
+                <tr>
+                    <td class="text-primary">
+                        <span style="font-weight:900;">@i</span>
+                    </td>
+                    @{
+                        if (!string.IsNullOrEmpty(obj.Country))
+                        {
+                            <td class="flag-icon-background flag-icon-@obj.Country"></td>
+                        }
+                        else
+                        {
+                            <td><i class="fa fa-flag text-danger"></i></td>
+                        }
+                    }
+                    <td class="text-primary">
+                        <span style="font-weight:900;">
+                            @{
+                                var nameArray = obj.Player.Split(' ');
+                                string fName = nameArray[0];
+                                string lNameInitial = "";
+                                if (nameArray.Length > 1)
+                                {
+                                    lNameInitial = nameArray[1].Substring(0, 1);
+                                    fName = fName + " " + lNameInitial + ".";
+                                }
+                                @fName;
+                            }
+                        </span>
+                    </td>
+                    <td>
+                        @obj.Played
+                    </td>
+                    <td class="text-green">
+                        <span style="font-weight:900;">@obj.Won</span>
+                    </td>
+                    <td class="text-red">
+                        <span style="font-weight:900;">@obj.Lost</span>
+                    </td>
+                    <td class="text-primary">
+                        <span style="font-weight:900;">@obj.Points</span>
+                    </td>
+                    <td>
+                        @{
+                            @(obj.Average.Value.ToString("0.##"))
+                        }
+                    </td>
+                    <td>
+                        @{
+                            @(obj.Economy.Value.ToString("0.##"))
+                        }
+                    </td>
+                    <td class="text-primary">
+                        @obj.RunsScored
+                    </td>
+                    <td class="text-primary">
+                        @obj.WicketsTaken
+                    </td>
+                    <td class="text-primary">
+                        <strong>@obj.WinPercentage.Value.ToString("0.##")</strong>
+                    </td>
+                    <td>
+                        @obj.GroupName
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<script>
+    $(function () {
+
+        $(".table tbody tr").on('click', function (e) {
+            $(this).addClass('active').addClass('danger').siblings().removeClass('active').removeClass('danger');
+        });
+
+        var length = $(".table tbody tr").length;
+        $("#displayRecord").text(length);
+
+    });
+
+</script>

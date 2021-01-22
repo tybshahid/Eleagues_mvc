@@ -1,0 +1,72 @@
+﻿@model Cricket.CustomModels.ChartsData
+<html>
+<head>
+    <title>Charts</title>
+</head>
+<body>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="MainTableDiv">
+            <div class="col-lg-2 hidden-print">
+                <div class="list-group">
+                    <div class="list-group-item disabled">
+                        <i class="fa fa-user-tachometer"></i>&nbsp;&nbsp;&nbsp;
+                        Menu
+                    </div>
+                    <a class="list-group-item active" id="linkLeadingScorersVet" href="#">
+                        <span class="fa fa-trophy"></span>&nbsp;&nbsp;&nbsp;Leading Scorers Vet
+                    </a>
+                    <a class="list-group-item" id="linkLeadingScorersPro" href="#">
+                        <span class="fa fa-trophy"></span>&nbsp;&nbsp;&nbsp;Leading Scorers Pro
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 box box-solid">
+                <div id="ViewDataDiv" class="table-responsive">
+                    @{ Html.RenderPartial("~/Views/Charts/_LeadingRunsScorersVet.cshtml", Model.LeadingScorers); }
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="ManagerDiv">
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+     $(function () {
+
+         $("#linkLeadingScorersVet").on('click', function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Charts/ViewLeadingScorersVet")',
+                data: {
+                    __RequestVerificationToken: gettoken()
+                },
+                success: function (result) {
+                    $('#ViewDataDiv').html(result);
+                }
+            });
+
+            $('a.list-group-item,#listFilter li').removeClass('active');
+            $(this).addClass('active');
+        });
+
+         $("#linkLeadingScorersPro").on('click', function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Charts/ViewLeadingScorersPro")',
+                data: {
+                    __RequestVerificationToken: gettoken()
+                },
+                success: function (result) {
+                    $('#ViewDataDiv').html(result);
+                }
+            });
+
+            $('a.list-group-item,#listFilter li').removeClass('active');
+            $(this).addClass('active');
+        });
+
+     });
+</script>

@@ -1,0 +1,102 @@
+﻿@model Cricket.CustomModels.LeagueCreatorModel
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h3 class="text-muted mt0">
+        League Creator
+    </h3>
+    <form id="frmCreateLeague" action='@Url.Content("../Administration/SaveLeague")' autocomplete="off" method="post" class="form-horizontal container pdt box box-solid">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Existing Leagues
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">
+                        League Name
+                    </label>
+                    <div class="col-sm-4">
+                        <select id="ddlLeague" name="LeagueID" class="form-control">
+                            <option value="">Please Select</option>
+                            @{
+                                if (Model.LeaguesAll != null)
+                                {
+                                    foreach (var league in Model.LeaguesAll)
+                                    {
+                                        <option value="@league.RecordID">@league.Name</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    League Details
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div id="leagueDetailsDiv" style="width: 100%;overflow-y: auto;">
+                    @{ Html.RenderPartial("~/Views/Administration/_LeagueCreator.cshtml", Model.LeagueSelected); }
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button id="btnSubmit" type="submit" class="btn btn-success btn-flat">
+                            <span class="fa fa-floppy-o text-white"></span>&nbsp;&nbsp;Save League
+                        </button>
+                        <a class="btn btn-flat btn-default" data-toggle="tab" href="#MainTableDiv">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+<script>
+    $(function () {
+
+        $("#ddlLeague").change(function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Administration/FetchLeagueData")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    LeagueID: this.value
+                },
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        $('#leagueDetailsDiv').html(result);
+                    });
+                }
+            });
+
+        });
+
+        $("#frmCreateLeague").submit(function (e) {
+
+            e.preventDefault();
+            $.ajax({
+                url: '@Url.Content("~/Administration/SaveLeague")',
+                type: 'post',
+                data: $(this).serialize() + "&__RequestVerificationToken=" + gettoken(),
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        $('#ManagerDiv').html(result);
+                        toastr.success("League Saved");
+                    });
+                }
+            });
+
+        });
+
+    });
+</script>

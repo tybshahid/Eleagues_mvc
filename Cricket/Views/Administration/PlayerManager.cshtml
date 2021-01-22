@@ -1,0 +1,233 @@
+﻿@model Cricket.CustomModels.PlayerManagerModel
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h3 class="text-muted mt0">
+        Player Manager
+    </h3>
+    @using (Html.BeginForm("SavePlayer", "Administration", FormMethod.Post, new { id = "frmPlayerManager", enctype = "multipart/form-data", @autocomplete = "off", @class = "form-horizontal container pdt box box-solid" }))
+    {
+        @Html.AntiForgeryToken()
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Existing Players
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">
+                        Player Name
+                    </label>
+                    <div class="col-sm-4">
+                        <select id="ddlPlayer" name="PlayerID" class="form-control">
+                            <option value="">Please Select</option>
+                            @{
+                                if (Model.PlayersAll != null)
+                                {
+                                    foreach (var player in Model.PlayersAll)
+                                    {
+                                        <option value="@player.RecordID">@player.Name</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                    <label class="col-sm-2 control-label">
+                        League Name
+                    </label>
+                    <div class="col-sm-4">
+                        <select id="ddlLeague" name="LeagueID" class="form-control">
+                            <option value="">Please Select</option>
+                            @{
+                                if (Model.LeaguesAll != null)
+                                {
+                                    foreach (var league in Model.LeaguesAll)
+                                    {
+                                        <option value="@league.RecordID">@league.Name</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">
+                        Team Name (League)
+                    </label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" id="TeamName" name="TeamName" placeholder="Team Name">
+                    </div>
+                    <label class="col-sm-2 control-label">
+                        Group Name
+                    </label>
+                    <div class="col-sm-4">
+                        <select id="GroupID" name="GroupID" class="form-control">
+                            @{
+                                if (Model.Groups != null)
+                                {
+                                    foreach (var obj in Model.Groups)
+                                    {
+                                        <option value="@obj.RecordID">@obj.GroupName</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button id="btnAddPlayer" type="button" class="btn btn-warning btn-flat">
+                            <span class="fa fa-plus-square text-white"></span>&nbsp;&nbsp;Add Player
+                        </button>
+                        <a class="btn btn-flat btn-default" data-toggle="tab" href="#MainTableDiv">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <a data-toggle="collapse" href="#collapsePlayers">
+                    <h3 class="panel-title">Player Details</h3>
+                </a>
+            </div>
+            <div id="collapsePlayers" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div id="DetailsDivPartial" style="width: 100%;overflow-y: auto;">
+                        @{ Html.RenderPartial("~/Views/Administration/_PlayerManager.cshtml", Model.PlayerSelected); }
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button id="btnSavePlayer" type="submit" class="btn btn-success btn-flat">
+                                <span class="fa fa-floppy-o text-white"></span>&nbsp;&nbsp;Save Player
+                            </button>
+                            <a class="btn btn-flat btn-default" data-toggle="tab" href="#MainTableDiv">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-warning">
+            <div class="panel-heading">
+                <a data-toggle="collapse" href="#collapseLeaguePlayers">
+                    <h3 class="panel-title">League Players</h3>
+                </a>
+            </div>
+            <div id="collapseLeaguePlayers" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <div id="LeaguePlayersDivPartial" style="width: 100%;overflow-y: auto;">
+                        @{ Html.RenderPartial("~/Views/Administration/_PlayerManagerLeague.cshtml", Model.LeaguePlayers); }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</body>
+</html>
+<script>
+    $(function () {
+
+        $("#ddlPlayer").change(function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Administration/FetchPlayers")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    PlayerID: this.value
+                },
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        $('#DetailsDivPartial').html(result);
+                    });
+                }
+            });
+
+        });
+
+        $("#ddlLeague").change(function () {
+
+            $.ajax({
+
+                type: 'post',
+                url: '@Url.Content("~/Administration/FetchLeaguePlayers")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    leagueID: this.value
+                },
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        $('#LeaguePlayersDivPartial').html(result);
+                    });
+                }
+            });
+
+        });
+
+        $("#frmPlayerManager").submit(function (e) {
+
+            e.preventDefault();
+            var formData = new FormData(this);
+
+            $.ajax({
+                url: '@Url.Content("~/Administration/SavePlayer")',
+                type: 'post',
+                //data: $(this).serialize() + "&__RequestVerificationToken=" + gettoken(),
+                data: formData,
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        $('#ManagerDiv').html(result);
+                        toastr.success("Player Saved");
+                    });
+                },
+                cache: false,
+                contentType: false,
+                processData: false
+            });
+
+        });
+
+         $("#btnAddPlayer").on('click', function () {
+
+             if ($('#ddlPlayer').val() === '') {
+                toastr.error("Please Select a Player");
+                return false;
+             }
+
+             if ($('#ddlLeague').val() === '') {
+                toastr.error("Please Select a League");
+                return false;
+             }
+
+             //if ($('#TeamName').val() === '') {
+             //    toastr.error("Please Enter Team Name");
+             //    return false;
+             //}
+
+            // Add Player
+            $.ajax({
+                url: '@Url.Content("~/Administration/AddPlayertoLeague")',
+                type: 'post',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    playerID: $('#ddlPlayer').val(),
+                    leagueID: $('#ddlLeague').val(),
+                    TeamName: $('#TeamName').val(),
+                    GroupID: $('#GroupID').val()
+                },
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        $('#LeaguePlayersDivPartial').html(result);
+                        $('#TeamName').val('');
+                        $('#GroupID').val('');
+                    });
+                }
+            });
+
+         });
+
+    });
+</script>

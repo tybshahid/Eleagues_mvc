@@ -1,0 +1,148 @@
+﻿@model Cricket.CustomModels.RulesManagerModel
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h3 class="text-muted mt0">
+        Rules Manager
+    </h3>
+    <form id="frmLeagueRules" autocomplete="off" method="post" class="form-horizontal container pdt box box-solid">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Manage League Rules
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">
+                        League Name
+                    </label>
+                    <div class="col-sm-4">
+                        <select id="ddlLeague" name="ddlLeague" class="form-control" required>
+                            <option value="">Please Select</option>
+                            @{foreach (var league in Model.LeaguesAll)
+                                {
+                                    <option value="@league.RecordID">@league.Name</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button id="btnDeleteRule" type="button" class="btn btn-flat btn-danger btn-sm">
+                            <span class="fa fa-remove text-white"></span>&nbsp;&nbsp;Delete Rule
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label class="col-sm-2 control-label">
+                        Rule Description
+                    </label>
+                    <div class="col-sm-10">
+                        <textarea class="form-control" rows="3" id="RuleDescription" name="RuleDescription" maxlength="1000" style="margin: 0px 23.1563px 0px 0px; height: 113px; min-width:100%; resize:none;"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button id="btnAddRule" type="submit" class="btn btn-flat btn-primary btn-sm">
+                            <span class="fa fa-plus-square text-white"></span>&nbsp;&nbsp;Add Rule&nbsp;&nbsp;&nbsp;&nbsp;
+                        </button>
+                        <a class="btn btn-flat btn-default" data-toggle="tab" href="#MainTableDiv">Cancel</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-success">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Active League Rules
+                </h3>
+            </div>
+            <div class="panel-body">
+                <div id="leagueRulesDivPartial" style="width: 100%;overflow-y: auto;">
+                    @{ Html.RenderPartial("~/Views/Administration/_Rules.cshtml", Model.RulesSelectedLeague); }
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+<script>
+    $(function () {
+
+        $("#ddlLeague").change(function () {
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Administration/FetchRules")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    LeagueID: this.value
+                },
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        $('#leagueRulesDivPartial').html(result);
+                    });
+                }
+            });
+
+        });
+
+        $("#frmLeagueRules").submit(function (e) {
+
+            e.preventDefault();
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Administration/AddRule")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    LeagueID: $("#ddlLeague").val(),
+                    RuleDescription: $('#RuleDescription').val()
+                },
+                success: function (result) {
+                    ajaxSuccessCall(result, function () {
+                        toastr.success("Rule Added");
+                        $('#leagueRulesDivPartial').html(result);
+                    });
+                }
+            });
+
+            return false;
+        });
+
+        $("#btnDeleteRule").on('click', function () {
+
+            var _ruleIds = [];
+
+            if ($(".rule-check:checked").length === 0) {
+                toastr.error("No Rules Selected");
+                return;
+            }
+
+            $(".rule-check:checked").each(function () {
+                _ruleIds.push($(this).closest('tr').attr('data-id'));
+            });
+
+            $.ajax({
+                type: 'post',
+                url: '@Url.Content("~/Administration/DeleteRule")',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    LeagueID: $("#ddlLeague").val(),
+                    ruleIds: _ruleIds.toString()
+                },
+                success: function (result) {
+                    toastr.error("Deleted Successfully");
+                    $('#leagueRulesDivPartial').html(result);
+                }
+            });
+
+        });
+
+    });
+
+</script>

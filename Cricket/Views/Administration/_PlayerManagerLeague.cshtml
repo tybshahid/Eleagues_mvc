@@ -1,0 +1,75 @@
+﻿@model List<Cricket.Models.LeaguesPlayersMaster>
+<table data-index="1" class="table table-hover table-striped">
+    <thead>
+        <tr>
+            <th>
+            </th>
+            <th>
+                Player Name
+            </th>
+            <th>
+                Group Name
+            </th>
+            <th>
+                Nickname
+            </th>
+            <th>
+                Team Name
+            </th>
+            <th>
+                PSN
+            </th>
+            <th>
+                Mobile
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            if (Model != null && Model.Count > 0)
+            {
+                foreach (Cricket.Models.LeaguesPlayersMaster objLeaguesPlayer in Model)
+                {
+                    <tr data-id="@objLeaguesPlayer.RecordID">
+                        <td class="flag-icon-background flag-icon-@objLeaguesPlayer.PlayersMaster.Country"></td>
+                        <td>
+                            <strong>@objLeaguesPlayer.PlayersMaster.Name</strong>
+                        </td>
+                        <td>
+                            <strong>@objLeaguesPlayer.Groups.GroupName</strong>
+                        </td>
+                        <td>
+                            @objLeaguesPlayer.PlayersMaster.NickName
+                        </td>
+                        <td>
+                            @objLeaguesPlayer.TeamName
+                        </td>
+                        <td>
+                            @objLeaguesPlayer.PlayersMaster.PSN
+                        </td>
+                        <td>
+                            @objLeaguesPlayer.PlayersMaster.Mobile
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>
+<script>
+    $(function () {
+
+        @{
+            if (ViewData["ServerError"] != null && ViewData["ServerError"].ToString() != "") {
+                <text>toastr.error('@ViewData["ServerError"]')</text>
+            }
+        }
+
+        @{
+            if (ViewData["ServerMessage"] != null && ViewData["ServerMessage"].ToString() != "") {
+                <text>toastr.success('@ViewData["ServerMessage"]')</text>
+            }
+        }
+
+    });
+</script>

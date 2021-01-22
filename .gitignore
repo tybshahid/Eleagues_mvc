@@ -1,0 +1,10 @@
+bin
+obj
+.vscode
+*.db
+wwwroot
+publish
+packages
+flags
+Uploads
+Web.config

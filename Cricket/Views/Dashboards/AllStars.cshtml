@@ -1,0 +1,80 @@
+﻿@model Cricket.CustomModels.LeaguePlayersModel
+<div class="text-center mt-3">
+    <h2><i class="fas fa-medal"></i>&nbsp;All Stars</h2>
+</div>
+<div class="accordion" id="accordionExample">
+    <div class="card">
+        <div class="card-header p-0" id="headingOne">
+            <h4 class="mb-0">
+                <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Filters
+                </button>
+            </h4>
+        </div>
+        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+            <div class="card-body">
+                <p class="card-text">
+                    <select id="ddlLeague" name="LeagueID" class="form-control">
+                        <option value="">Please Select</option>
+                        @{
+                            if (Model.LeaguesAll != null)
+                            {
+                                foreach (var league in Model.LeaguesAll)
+                                {
+                                    if (ViewData["defaultLeague"] != null && (long)ViewData["defaultLeague"] == league.RecordID)
+                                    {
+                                        <option selected value="@league.RecordID">@league.Name</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@league.RecordID">@league.Name</option>
+                                    }
+                                }
+                            }
+                        }
+                    </select>
+                    <select id="ddlPlayer" name="PlayerID" class="form-control">
+                        <option value="">Please Select</option>
+                        @{
+                            if (Model.PlayersAll != null)
+                            {
+                                foreach (var player in Model.PlayersAll)
+                                {
+                                    <option value="@player.RecordID">@player.Name</option>
+                                }
+                            }
+                        }
+                    </select>
+                </p>
+                <div class="text-center">
+                    <button id="btnApply" type="button" class="btn btn-primary">Fetch Stars</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="StarsDivPartial" class="container mt-3">
+    @{ Html.RenderPartial("~/Views/Dashboards/_AllStars.cshtml", Model.Stars); }
+</div>
+<script>
+    $(function () {
+
+        $("#btnApply").on('click', function () {
+
+            $.ajax({
+                url: '@Url.Content("~/Dashboards/FetchLeagueStarsView")',
+                type: 'post',
+                data: {
+                    __RequestVerificationToken: gettoken(),
+                    LeagueID: $('#ddlLeague').val(),
+                    PlayerID: $('#ddlPlayer').val(),
+                },
+                success: function (result) {
+                    $('#StarsDivPartial').html(result);
+                }
+            });
+
+        });
+
+    });
+</script>

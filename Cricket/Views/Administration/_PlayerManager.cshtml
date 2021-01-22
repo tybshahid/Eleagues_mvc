@@ -1,0 +1,123 @@
+﻿@model Cricket.Models.PlayersMaster
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        Player Name
+    </label>
+    <div class="col-sm-4">
+        <input type="text" required class="form-control" name="Name" placeholder="Name" value="@Model.Name">
+    </div>
+    <label class="col-sm-2 control-label">
+        Nick Name
+    </label>
+    <div class="col-sm-4">
+        <input type="text" required class="form-control" name="NickName" placeholder="NickName" value="@Model.NickName">
+    </div>
+</div>
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        Category
+    </label>
+    <div class="col-sm-4">
+        <select id="Category" name="Category" class="form-control">
+            <option value="">Please Select</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+        </select>
+    </div>
+</div>
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        PSN
+    </label>
+    <div class="col-sm-4">
+        <input type="text" required class="form-control" name="PSN" placeholder="PSN" value="@Model.PSN">
+    </div>
+    <label class="col-sm-2 control-label">
+        Country
+    </label>
+    <div class="col-sm-4">
+        <select id="Country" name="Country" class="form-control" required>
+            <option value="">Please Select</option>
+            <option value="af">Afghanistan</option>
+            <option value="au">Australia</option>
+            <option value="bh">Bahrain</option>
+            <option value="ca">Canada</option>
+            <option value="de">Germany</option>
+            <option value="in">India</option>
+            <option value="il">Israel</option>
+            <option value="it">Italy</option>
+            <option value="pk">Pakistan</option>
+            <option value="qa">Qatar</option>
+            <option value="lc">Saint Lucia</option>
+            <option value="sg">Singapore</option>
+            <option value="se">Sweden</option>
+            <option value="ae">UAE</option>
+            <option value="gb">United Kingdom</option>
+            <option value="us">USA</option>
+            <option value="tt">Trinidad and Tobago</option>
+            <option value="bb">Barbados</option>
+        </select>
+    </div>
+</div>
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        Email
+    </label>
+    <div class="col-sm-4">
+        <input type="email" required class="form-control" name="Email" placeholder="Email" value="@Model.Email">
+    </div>
+    <label class="col-sm-2 control-label">
+        Mobile
+    </label>
+    <div class="col-sm-4">
+        <input type="text" required class="form-control" name="Mobile" placeholder="Mobile" value="@Model.Mobile">
+    </div>
+</div>
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        User ID
+    </label>
+    <div class="col-sm-4">
+        <input type="text" required class="form-control" name="UserID" placeholder="UserID" value="@Model.UserID">
+    </div>
+    <label class="col-sm-2 control-label">
+        Password
+    </label>
+    <div class="col-sm-4">
+        <input type="text" required class="form-control" name="Password" placeholder="Password" value="@Model.Password">
+    </div>
+</div>
+<div class="form-group form-group-sm">
+    <label class="col-sm-2 control-label">
+        Is Active?
+    </label>
+    <div class="col-sm-4">
+        <select id="IsActive" name="IsActive" class="form-control" required>
+            <option value="">Please Select</option>
+            <option value="False">No</option>
+            <option value="True">Yes</option>
+        </select>
+    </div>
+    <label class="col-sm-2 control-label margin-top-sm">
+        Photo
+    </label>
+    <div class="col-sm-4">
+        <input name="upload" class="form-control" type="file" id="upload" accept="image/*" />
+    </div>
+</div>
+<script>
+    $(function () {
+
+        @if (Model != null) {
+            <text>
+                $('#Country').val('@Model.Country');
+                $('#Category').val('@Model.Category');
+                $('#IsActive').val('@Model.IsActive');
+            </text>
+        }
+
+    });
+
+</script>
+

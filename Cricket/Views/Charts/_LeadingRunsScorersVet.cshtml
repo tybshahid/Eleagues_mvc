@@ -1,0 +1,65 @@
+﻿@model List<Cricket.CustomModels.LeadingScorer>
+<style>
+    .table th {
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .table td {
+        text-align: center;
+        white-space: nowrap;
+    }
+</style>
+<div class="text-left" style="margin-bottom:10px;margin-top:10px;">
+    <span class="next label label-primary">
+        Leading Scorers - Veteran Mode
+    </span>
+</div>
+<table data-index="1" class="table table-hover table-striped table-condensed">
+    <thead>
+        <tr>
+            <th>
+                <i class="fa fa-slack"></i>
+            </th>
+            <th>
+                <i class="fa fa-flag"></i>
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Runs
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 0;
+            foreach (var obj in Model)
+            {
+                i++;
+                <tr>
+                    <td width="10%"><span class="badge badge-default">@i</span></td>
+                    <td width="20%" class="flag-icon-background flag-icon-@obj.Country" style="background-size:25px;"></td>
+                    <td width="30%">
+                        <strong>@obj.Name</strong>
+                    </td>
+                    <td width="40%">
+                        <span class="badge badge-success">
+                            <i class="fa fa-trophy text-white"></i>&nbsp;&nbsp;@obj.Runs
+                        </span>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+<script>
+    $(function () {
+
+        var length = $(".table tbody tr").length;
+        $("#displayRecord").text(length);
+
+    });
+
+</script>

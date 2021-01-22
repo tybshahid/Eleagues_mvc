@@ -1,0 +1,75 @@
+﻿<html>
+<head>
+    <title>Administration</title>
+</head>
+<body>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="MainTableDiv">
+            <div class="col-sm-4 col-sm-offset-4 hidden-print">
+                <div class="list-group text-center">
+                    <div class="list-group-item disabled">
+                        <i class="fa fa-user-secret"></i>&nbsp;&nbsp;&nbsp;
+                        Administration Menu
+                    </div>
+                    @{ if (Session["IsAdmin"] != null && (bool)Session["IsAdmin"])
+                        {
+                            <a class="list-group-item list-group-item-success" data-toggle="tab" id="linkLeagueCreator" href="#ManagerDiv">
+                                <div class="text-success"><span class="fa fa-wrench"></span>&nbsp;&nbsp;&nbsp;<strong>League Creator</strong></div>
+                            </a>
+                            <a class="list-group-item list-group-item-danger" data-toggle="tab" id="linkRulesManager" href="#ManagerDiv">
+                                <div class="text-danger"><span class="fa fa-wrench"></span>&nbsp;&nbsp;&nbsp;<strong>Rules Manager</strong></div>
+                            </a>
+                            <a class="list-group-item list-group-item-warning" data-toggle="tab" id="linkPlayerManager" href="#ManagerDiv">
+                                <div class="text-warning"><span class="fa fa-wrench"></span>&nbsp;&nbsp;&nbsp;<strong>Player Manager</strong></div>
+                            </a>
+                            @*<a class="list-group-item list-group-item-success" data-toggle="tab" id="linkSquadsManager" href="#ManagerDiv">
+                                <div class="text-success"><span class="fa fa-wrench"></span>&nbsp;&nbsp;&nbsp;<strong>Squads Manager</strong></div>
+                            </a>*@
+                            <a class="list-group-item list-group-item-success" data-toggle="tab" id="linkKnockoutsManager" href="#ManagerDiv">
+                                <div class="text-success"><span class="fa fa-wrench"></span>&nbsp;&nbsp;&nbsp;<strong>Knockouts Manager</strong></div>
+                            </a>
+                        }
+                    }
+                    <a class="list-group-item list-group-item-info" data-toggle="tab" id="linkGameManager" href="#ManagerDiv">
+                        <div class="text-info"><span class="fa fa-wrench"></span>&nbsp;&nbsp;&nbsp;<strong>Game Manager</strong></div>
+                    </a>
+                    <a class="list-group-item list-group-item-danger" href="@Url.Content("~/Login/Logout")">
+                        <div class="text-danger"><span class="fa fa-sign-out"></span>&nbsp;&nbsp;&nbsp;<strong>Log Out</strong></div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="ManagerDiv">
+        </div>
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    $(function () {
+
+        $("#linkLeagueCreator").on('click', function () {
+            $('#ManagerDiv').load('@Url.Content("~/Administration/OpenLeagueCreator")', { __RequestVerificationToken: gettoken() });
+        });
+
+        $("#linkRulesManager").on('click', function () {
+            $('#ManagerDiv').load('@Url.Content("~/Administration/OpenRulesManager")', { __RequestVerificationToken: gettoken() });
+        });
+
+        $("#linkPlayerManager").on('click', function () {
+            $('#ManagerDiv').load('@Url.Content("~/Administration/OpenPlayerManager")', { __RequestVerificationToken: gettoken() });
+        });
+
+        $("#linkSquadsManager").on('click', function () {
+            $('#ManagerDiv').load('@Url.Content("~/Administration/OpenSquadsManager")', { __RequestVerificationToken: gettoken() });
+        });
+
+        $("#linkKnockoutsManager").on('click', function () {
+            $('#ManagerDiv').load('@Url.Content("~/Administration/OpenKnockoutsManager")', { __RequestVerificationToken: gettoken() });
+        });
+
+        $("#linkGameManager").on('click', function () {
+            $('#ManagerDiv').load('@Url.Content("~/Administration/OpenGameManager")', { __RequestVerificationToken: gettoken() });
+        });
+
+    });
+</script>
